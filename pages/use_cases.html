@@ -9,7 +9,7 @@
     <header>
         <h1>L'Ère de l'AI-Defined Vehicle (AIDV)</h1>
         <nav>
-            <a href="index.html" class="active">Accueil & Contexte</a>
+            <a href="../index.html" class="active">Accueil & Contexte</a>
             <a href="models.html">Modèles & Hardware</a>
             <a href="use_cases.html">Cas d'Usage & Marché</a>
             <a href="future.html">Vision 2030</a>
@@ -105,50 +105,5 @@
             </ul>
         </section>
     </main>
-
-    <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8CWOcOEAmN7mcG-cBf_D-hi9276DKod0ZhoD20z_-plyb10BPuFkUcnsRBG02Y2n2NQ/exec";
-        const PAGE_TOPIC = ["manufacturers"];
-    
-        async function loadNews() {
-            const listContainer = document.getElementById('news-list');
-    
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL);
-                const data = await response.json();
-    
-                const filteredData = data.filter(item => PAGE_TOPIC.includes(item.topic));
-    
-                listContainer.innerHTML = '';
-    
-                if (filteredData.length === 0) {
-                    listContainer.innerHTML = '<li>Aucune actualité récente pour ce sujet.</li>';
-                    return;
-                }
-    
-                filteredData.slice(0, 10).forEach(article => {
-                    const li = document.createElement('li');
-                    li.style.marginBottom = "10px";
-                    
-                    const dateObj = new Date(article.date);
-                    const dateStr = dateObj.toLocaleDateString('fr-FR');
-    
-                    li.innerHTML = `
-                        <span style="font-size: 0.9em; color: #666;">${dateStr}</span> - 
-                        <a href="${article.link}" target="_blank" style="text-decoration: none; font-weight: bold; color: #007bff;">
-                            ${article.title}
-                        </a>
-                    `;
-                    listContainer.appendChild(li);
-                });
-    
-            } catch (error) {
-                console.error("Erreur :", error);
-                listContainer.innerHTML = '<li style="color: red;">Impossible de charger les actualités pour le moment.</li>';
-            }
-        }
-    
-        window.onload = loadNews;
-    </script>
 </body>
 </html>
