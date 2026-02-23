@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1>L'Ère de l'AI-Defined Vehicle (AIDV)</h1>
+        <nav>
+            <a href="index.html" class="active">Accueil & Contexte</a>
+            <a href="models.html">Modèles & Hardware</a>
+            <a href="use_cases.html">Cas d'Usage & Marché</a>
+            <a href="future.html">Vision 2030</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section>
+            <h1>Cas d'Usage de l'IA Embarquée : HMI, ADAS et Diagnostic</h1>
+            <p>L'IA embarquée transforme l'interaction véhicule-passager et les capacités de sécurité. L'Interface Homme-Machine (HMI) devient conversationnelle et proactive, capable d'empathie grâce aux SLM de nouvelle génération (Mercedes MBUX, Bosch AI Cockpit). Dans le domaine de l'ADAS (Advanced Driver Assistance Systems), le passage à la "Physical AI" permet aux véhicules de raisonner sur des situations complexes plutôt que de suivre des règles rigides. Enfin, la maintenance prédictive et les interactions V2X (Vehicle-to-Everything) bénéficient de l'IA locale pour traiter des téraoctets de données capteurs et fournir des diagnostics instantanés ou des résumés de trafic intelligents.</p>
+        </section>
+    
+        <section>
+            <h2>Analyse des Applications Critiques</h2>
+    
+            <h3>HMI Cognitive et Assistants Vocaux</h3>
+            <p>L'assistant virtuel MBUX de Mercedes-Benz, fonctionnant sur le nouveau système d'exploitation MB.OS, utilise l'IA générative pour offrir des interactions naturelles avec quatre émotions différentes (neutre, amical, personnel, proactif). Contrairement aux systèmes de commande simples, ces assistants conservent le contexte conversationnel à court terme, permettant des dialogues fluides. L'IA peut désormais "apprendre" les habitudes du conducteur : si le système remarque que l'utilisateur passe souvent en mode navigation à une intersection spécifique, il proposera proactivement l'affichage du guidage sur l'affichage tête haute (HUD).</p>
+    
+            <h3>ADAS Raisonné et Physical AI</h3>
+            <p>Le saut qualitatif de l'ADAS réside dans le passage de la perception pure au raisonnement. NVIDIA Alpamayo 1 permet aux véhicules de gérer le "long tail" (scénarios rares et complexes) en utilisant le raisonnement "Chain-of-Thought". Par exemple, face à une situation de circulation inhabituelle, l'IA verbalise sa logique : "Je ralentis car le véhicule devant semble hésitant et un piéton s'approche de la chaussée". Cette transparence renforce la confiance de l'utilisateur et facilite la validation réglementaire pour le Niveau 4 d'autonomie.</p>
+    
+            <h3>Maintenance Prédictive et Diagnostic Intelligent</h3>
+            <p>Les SLM sont idéaux pour décoder en temps réel les données provenant du bus CAN ou des calculateurs. En cas d'alerte, l'agent IA peut consulter instantanément le manuel technique du véhicule (via RAG) pour fournir une explication claire au conducteur ou guider un technicien à travers les étapes de réparation. Des constructeurs comme Hyundai utilisent déjà des supercalculateurs (AI Factory) pour valider ces modèles de maintenance avant leur déploiement sur les véhicules de série.</p>
+    
+            <h3>V2X et Communication Intelligente</h3>
+            <p>Dans le cadre du V2X, l'IA locale peut résumer des flux massifs de messages provenant des infrastructures routières ou d'autres véhicules pour ne présenter au conducteur que les informations pertinentes. L'apprentissage fédéré (Federated Learning) permet aux véhicules d'une flotte de s'entraîner mutuellement sur des anomalies routières détectées sans jamais échanger de données privées, créant un système d'intelligence collective distribuée.</p>
+    
+            Domaine	Application IA	Impact sur l'Expérience / Sécurité
+            HMI	Assistant empathique zoné	
+            Interaction naturelle, réduction de la distraction 
+    
+            ADAS	Raisonnement Physical AI	
+            Sécurité accrue dans les cas limites 
+    
+            Diagnostic	RAG sur manuels techniques	
+            Réparation facilitée, réduction des immobilisations 
+    
+            V2X	Résumé de trafic distribué	
+            Optimisation de trajet en temps réel 
+    
+            Production	Digital Twins (Omniverse)	
+            Usines auto-optimisées, validation virtuelle 
+        </section>
+    
+    
+        <section>
+            <h1>Les Visionnaires de l'IA Embarquée</h1>
+            <p>Chaque constructeur adopte une approche distincte pour intégrer l'IA générative, oscillant entre partenariats technologiques et développement propriétaire.</p>
+        </section>
+    
+        <section>
+            <h3>Mercedes-Benz : L'Unification par MB.OS</h3>
+            <p>Mercedes-Benz a fait de son système d'exploitation maison, MB.OS, le cœur de sa stratégie futuriste. Lancé avec la nouvelle gamme CLA, MB.OS intègre des redondances physiques pour le calcul, la direction et l'alimentation, créant une base "fail-safe" indispensable pour l'autonomie de niveau 4. Mercedes collabore étroitement avec NVIDIA pour le matériel (DRIVE Thor) et avec Google pour l'IA générative (Gemini sur Vertex AI), créant un assistant virtuel capable d'une personnalisation extrême. L'ambition de Mercedes est de transformer la Classe S en une plateforme de robotaxi de luxe en partenariat avec Uber, utilisant les modèles Alpamayo pour un raisonnement de conduite de type humain. </p>
+        </section>
+    
+        <section>
+            <h3>BMW : La "Neue Klasse" et l'Expérience Utilisateur</h3>
+            <p>BMW mise sur sa "Neue Klasse" pour redéfinir l'interface homme-machine. Le modèle iX3, dont la production débute en 2026, utilise une architecture 800V et une batterie de 112,2 kWh offrant jusqu'à 650 km d'autonomie. Au-delà des specs électriques, BMW introduit le système "Panoramic iDrive", qui projette des informations sur toute la largeur du pare-brise via BMW OS X. BMW privilégie une intégration poussée des services cloud via 5G tout en renforçant les capacités locales pour les fonctions "Highway Assist", permettant une conduite semi-autonome fluide et sécurisée.</p>
+        </section>
+    
+        <section>
+            Modèle Phare	Puissance / Batterie	Architecture Numérique	Partenaire IA Clé
+            Mercedes CLA (2025)	Variable (EV/Hybride)	MB.OS / MBUX Virtual Assistant	Google Cloud / NVIDIA
+            BMW iX3 (2026)	463 hp / 112.2 kWh	BMW OS X / Panoramic iDrive	Cloud-native / Local Edge
+            Tesla Model Y (AI4)	~384 hp / 75-82 kWh	FSD v12+ / Custom AI stack	Propriétaire (In-house)
+            Leapmotor D19	Central Computing	Snapdragon Digital Chassis Elite	Qualcomm
+        </section>
+    
+        <section>
+            <h3>Waymo et WeRide : Le Duel des Robotaxis</h3>
+            <p>Dans le secteur des services de transport autonome (TaaS), Waymo (Alphabet) conserve une avance opérationnelle avec 150 000 trajets par semaine. Sa technologie repose sur une fusion de capteurs riche (LiDAR, radars, caméras) et un Edge Computing massif capable de traiter des téraoctets de données par heure sans latence de transmission. Waymo prévoit une expansion à Londres en septembre 2026, défiant les layouts urbains complexes de la capitale britannique. Son rival chinois, WeRide, adopte une approche plus axée sur l'IA pour réduire les coûts. Grâce à son simulateur "Genesis", WeRide a réduit ses dépenses d'entraînement de 75 %. En 2026, WeRide vise une flotte mondiale de 2 000 à 3 000 véhicules, s'appuyant sur des partenariats avec Uber pour l'agrégation de flottes et sur une technologie d'IA capable de s'adapter rapidement à de nouveaux marchés comme le Moyen-Orient.</p>
+        </section>
+
+        <section>
+            <ul>
+                <li><a href="https://www.qualcomm.com/news/onq/2025/01/ai-on-the-road-why-ai-powered-cars-are-the-future" target="_blank">AI on the Road: Why AI-Powered Cars Are the Future</a></li>
+                <li><a href="https://www.qualcomm.com/automotive/solutions/cockpit" target="_blank">Qualcomm Automotive Cockpit Solutions</a></li>
+                <li><a href="https://www.mediatek.com/products/dimensity-auto/cockpit-platforms" target="_blank">MediaTek Dimensity Auto Cockpit Platforms</a></li>
+                <li><a href="https://www.qualcomm.com/automotive/products/elite" target="_blank">Qualcomm Elite Automotive Platform</a></li>
+                <li><a href="https://www.tredence.com/blog/small-language-models" target="_blank">Small Language Models Overview</a></li> 
+                <li><a href="https://mercedes-benz-media.co.uk/releases/1568" target="_blank">Mercedes-Benz Media Release</a></li>
+                <li><a href="https://arxiv.org/abs/2511.00026v1" target="_blank">Gen AI in Automotive: Applications, Challenges, and Opportunities with a Case study on In-Vehicle Experience</a></li>
+                <li><a href="https://developer.nvidia.com/blog/building-autonomous-vehicles-that-reason-with-nvidia-alpamayo/" target="_blank">Building Autonomous Vehicles That Reason with NVIDIA Alpamayo</a></li>
+                <li><a href="https://www.researchgate.net/publication/394774854_Beyond_V2X_A_Review_of_Large_Language_Models_in_In-Vehicle_Autonomous_Driving_Systems" target="_blank">Beyond V2X: Large Language Models in In-Vehicle Autonomous Driving Systems</a></li>
+            </ul>
+        </section>
+        
+        <section id="news-container" style="margin-top: 50px; padding: 20px; background-color: #f9f9f9; border-top: 2px solid #333;">
+            <h3>Actualités en temps réel :</h3>
+            <ul id="news-list">
+                <li>Chargement des articles...</li>
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx8CWOcOEAmN7mcG-cBf_D-hi9276DKod0ZhoD20z_-plyb10BPuFkUcnsRBG02Y2n2NQ/exec";
+        const PAGE_TOPIC = ["manufacturers"];
+    
+        async function loadNews() {
+            const listContainer = document.getElementById('news-list');
+    
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                const data = await response.json();
+    
+                const filteredData = data.filter(item => PAGE_TOPIC.includes(item.topic));
+    
+                listContainer.innerHTML = '';
+    
+                if (filteredData.length === 0) {
+                    listContainer.innerHTML = '<li>Aucune actualité récente pour ce sujet.</li>';
+                    return;
+                }
+    
+                filteredData.slice(0, 10).forEach(article => {
+                    const li = document.createElement('li');
+                    li.style.marginBottom = "10px";
+                    
+                    const dateObj = new Date(article.date);
+                    const dateStr = dateObj.toLocaleDateString('fr-FR');
+    
+                    li.innerHTML = `
+                        <span style="font-size: 0.9em; color: #666;">${dateStr}</span> - 
+                        <a href="${article.link}" target="_blank" style="text-decoration: none; font-weight: bold; color: #007bff;">
+                            ${article.title}
+                        </a>
+                    `;
+                    listContainer.appendChild(li);
+                });
+    
+            } catch (error) {
+                console.error("Erreur :", error);
+                listContainer.innerHTML = '<li style="color: red;">Impossible de charger les actualités pour le moment.</li>';
+            }
+        }
+    
+        window.onload = loadNews;
+    </script>
+</body>
+</html>
