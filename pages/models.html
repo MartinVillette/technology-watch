@@ -20,14 +20,14 @@
     <main>
         <section>
             <h1>Architecture des Small Language Models pour l'Automobile</h1>
-            <p>L'architecture des SLM automobiles repose sur des structures de transformateurs (Transformers) hautement optimisées, principalement de type "decoder-only". L'innovation majeure réside dans la capacité de ces modèles à intégrer des modalités multiples (texte, vision, audio) pour créer une compréhension contextuelle de l'habitacle et de l'environnement extérieur. Des modèles comme Phi-3 Mini de Microsoft, Llama-3 de Meta ou Mistral 7B sont devenus les standards de fait pour le développement embarqué. L'architecture logicielle évolue vers des systèmes multi-agents où des agents spécialisés communiquent via des protocoles standardisés pour orchestrer les fonctions du véhicule</p>
+            <p>L'architecture des SLM automobiles repose sur des structures de transformateurs (Transformers) hautement optimisées, principalement de type "decoder-only". L'innovation majeure réside dans la capacité de ces modèles à intégrer des modalités multiples (texte, vision, audio) pour créer une compréhension contextuelle de l'habitacle et de l'environnement extérieur. Des modèles comme Phi-3 Mini de Microsoft, Llama-3 de Meta ou Mistral 7B sont devenus les standards de fait pour le développement embarqué. L'architecture logicielle évolue vers des systèmes multi-agents où des agents spécialisés communiquent via des protocoles standardisés pour orchestrer les fonctions du véhicule.</p>
         </section>
     
         <section>
             <h2>Détails Techniques et Modèles de Référence</h2>
-            <p>Le développement des SLM pour l'automobile se concentre sur la densité de paramètres et l'efficacité du raisonnement. Le modèle Phi-3 Mini (3,8 milliards de paramètres) est un exemple de "modèle dense en raisonnement" entraîné sur des jeux de données hautement qualitatifs, lui permettant de rivaliser avec des modèles 10 à 50 fois plus grands sur des tâches de logique. Cette efficacité permet son exécution sur des processeurs ARM standard ou des NPU dédiés avec une empreinte mémoire réduite. </p>
-            <p>L'architecture des SLM intègre désormais des capacités de "function calling" (appel de fonctions) robustes. Plutôt que de simplement générer du texte, le modèle est entraîné à produire des commandes structurées (ex: JSON ou gRPC) pour interagir avec les calculateurs (ECU) du véhicule. Par exemple, une requête utilisateur telle que "J'ai froid, prépare la voiture pour une conduite relaxante" est transformée par le SLM en une série d'appels système : activation du chauffage des sièges, réglage de la température à 22°C et changement de l'éclairage d'ambiance en bleu doux.</p>
-            <p>Une tendance majeure post-CES 2025 est l'émergence des modèles de Vision-Langage-Action (VLA). NVIDIA Alpamayo 1, un modèle de 10 milliards de paramètres, illustre cette avancée en utilisant des entrées vidéo multi-caméras pour générer non seulement des trajectoires de conduite, mais aussi des traces de raisonnement textuelles expliquant chaque décision. Cette architecture permet de passer d'une IA de perception (identifier un objet) à une IA physique capable de planifier et d'agir dans le monde réel.</p>
+            <p>Le développement des SLM pour l'automobile se concentre sur la densité de paramètres et l'efficacité du raisonnement. Le modèle Phi-3 Mini (3,8 milliards de paramètres) est un exemple de "modèle dense en raisonnement" entraîné sur des jeux de données hautement qualitatifs, lui permettant de rivaliser avec des modèles 10 à 50 fois plus grands sur des tâches de logique. Cette efficacité permet son exécution sur des processeurs ARM standard ou des NPU dédiés avec une empreinte mémoire réduite. <a href="#src-1" class="source-ref">[1]</a> </p>
+            <p>L'architecture des SLM intègre désormais des capacités de "function calling" (appel de fonctions) robustes. Plutôt que de simplement générer du texte, le modèle est entraîné à produire des commandes structurées (ex: JSON ou gRPC) pour interagir avec les calculateurs (ECU) du véhicule. Par exemple, une requête utilisateur telle que "J'ai froid, prépare la voiture pour une conduite relaxante" est transformée par le SLM en une série d'appels système : activation du chauffage des sièges, réglage de la température à 22°C et changement de l'éclairage d'ambiance en bleu doux. <a href="#src-2" class="source-ref">[2]</a></p>
+            <p>Une tendance majeure post-CES 2025 est l'émergence des modèles de Vision-Langage-Action (VLA). NVIDIA Alpamayo 1, un modèle de 10 milliards de paramètres, illustre cette avancée en utilisant des entrées vidéo multi-caméras pour générer non seulement des trajectoires de conduite, mais aussi des traces de raisonnement textuelles expliquant chaque décision. Cette architecture permet de passer d'une IA de perception (identifier un objet) à une IA physique capable de planifier et d'agir dans le monde réel. <a href="#src-3" class="source-ref">[3]</a></p>
     
             Famille de Modèle	Taille (Paramètres)	Caractéristiques Clés
             Microsoft Phi-3/4	3.8B - 14B	
@@ -44,6 +44,9 @@
     
             NVIDIA Alpamayo	10B	
             Modèle VLA (Vision-Langage-Action) pour la conduite autonome raisonnée 
+
+            <a href="#src-4" class="source-ref">[4]</a>
+            <a href="#src-5" class="source-ref">[5]</a>
     
             <p>L'interopérabilité de ces modèles est assurée par des frameworks comme ONNX (Open Neural Network Exchange) ou ExecuTorch, permettant de déployer un même modèle sur des cibles matérielles variées (NPU, GPU, DSP) tout en conservant les optimisations spécifiques au silicium. </p>
         </section>
@@ -59,10 +62,10 @@
     
             <h3>NVIDIA DRIVE Thor et l'Architecture Blackwell</h3>
             <p>Le SoC NVIDIA DRIVE AGX Thor représente le sommet de la pyramide de calcul automobile. Basé sur l'architecture Blackwell, il délivre une performance dépassant les 1 000 INT8 TOPS (et 2 000 FP4 FLOPs). Son "Transformer Engine" est une innovation majeure qui permet de traiter les données vidéo comme une trame de perception continue, optimisant l'inférence pour les modèles de vision et de langage. Thor introduit également la précision FP8 (virgule flottante 8 bits), permettant de transférer des modèles depuis les environnements d'entraînement sans la perte de précision critique associée aux formats entiers traditionnels.</p>
-            <p>Une caractéristique stratégique de Thor est sa capacité de calcul multi-domaine. Le processeur peut partitionner ses ressources de manière isolée pour faire tourner simultanément des systèmes d'exploitation différents (Linux, QNX, Android) sur une seule puce, garantissant que les tâches d'infotainment n'interfèrent jamais avec les fonctions de conduite autonome certifiées ASIL-D.</p>
-    
+            <p>Une caractéristique stratégique de Thor est sa capacité de calcul multi-domaine. Le processeur peut partitionner ses ressources de manière isolée pour faire tourner simultanément des systèmes d'exploitation différents (Linux, QNX, Android) sur une seule puce, garantissant que les tâches d'infotainment n'interfèrent jamais avec les fonctions de conduite autonome certifiées ASIL-D. <a href="#src-6" class="source-ref">[6]</a> <a href="#src-7" class="source-ref">[7]</a></p>
+
             <h3>Qualcomm Snapdragon Cockpit Elite et Ride Elite</h3>
-            <p>La plateforme Snapdragon Elite de Qualcomm mise sur une approche hétérogène combinant le processeur central Oryon (3 fois plus rapide que la génération précédente) et un NPU Hexagon optimisé pour l'IA générative. Ce NPU est désormais 12 fois plus rapide que ses prédécesseurs et intègre des micro-couches matérielles pour améliorer l'efficacité énergétique lors de l'exécution de modèles complexes comme Llama-3 ou des modèles de vision large (LVM). Qualcomm met l'accent sur "l'IA Agentique", permettant au véhicule de devenir un assistant proactif capable de traiter simultanément l'audio, la vidéo et les données capteurs pour anticiper les besoins des passagers.</p>
+            <p>La plateforme Snapdragon Elite de Qualcomm mise sur une approche hétérogène combinant le processeur central Oryon (3 fois plus rapide que la génération précédente) et un NPU Hexagon optimisé pour l'IA générative. Ce NPU est désormais 12 fois plus rapide que ses prédécesseurs et intègre des micro-couches matérielles pour améliorer l'efficacité énergétique lors de l'exécution de modèles complexes comme Llama-3 ou des modèles de vision large (LVM). Qualcomm met l'accent sur "l'IA Agentique", permettant au véhicule de devenir un assistant proactif capable de traiter simultanément l'audio, la vidéo et les données capteurs pour anticiper les besoins des passagers. <a href="#src-8" class="source-ref">[8]</a></p>
             
             <h3>MediaTek Dimensity Auto et le Partenariat NVIDIA</h3>
             <p>MediaTek a consolidé sa position avec la gamme Dimensity Auto, notamment le fleuron C-X1. En intégrant des cœurs GPU de classe NVIDIA Blackwell et en supportant l'écosystème NVIDIA DRIVE OS, MediaTek permet aux constructeurs d'accéder à des capacités d'IA haut de gamme tout en bénéficiant de l'expertise de MediaTek en matière d'intégration SoC pour le grand public. Cette collaboration est cruciale pour l'émergence des "cockpits unifiés" où l'IA gère l'affichage sur six écrans ou plus, le monitoring du conducteur (DMS) et l'assistance vocale zonée.</p>
@@ -94,6 +97,8 @@
     
             NPU LLM Flow	
             Support ONNX natif pour Phi/Llama 
+
+            <a href="#src-9" class="source-ref">[9]</a>
         </section>
     
         <section>
@@ -105,10 +110,10 @@
             <h2>Techniques de Modélisation et Runtime</h2>
     
             <h3>Quantification et types de données avancés</h3>
-            <p>La quantification consiste à convertir les poids d'un modèle d'une haute précision (FP32) vers une précision inférieure (INT8, INT4). NVIDIA a introduit le format NVFP4 (virgule flottante 4 bits), qui permet de diviser l'utilisation de la mémoire par huit tout en maintenant une performance de raisonnement adéquate pour les assistants de cockpit. L'utilisation de formats comme le BFP16 (Brain Floating Point) sur les NPU AMD ou Qualcomm assure également une meilleure stabilité lors de l'entraînement local ou du fine-tuning adaptatif.</p>
+            <p>La quantification consiste à convertir les poids d'un modèle d'une haute précision (FP32) vers une précision inférieure (INT8, INT4). NVIDIA a introduit le format NVFP4 (virgule flottante 4 bits), qui permet de diviser l'utilisation de la mémoire par huit tout en maintenant une performance de raisonnement adéquate pour les assistants de cockpit. L'utilisation de formats comme le BFP16 (Brain Floating Point) sur les NPU AMD ou Qualcomm assure également une meilleure stabilité lors de l'entraînement local ou du fine-tuning adaptatif. <a href="#src-10" class="source-ref">[10]</a></p>
     
             <h3>Distillation et Élagage (Pruning)</h3>
-            <p>La distillation de connaissances est un processus où un modèle compact apprend à reproduire le comportement d'un modèle large. Dans l'automobile, cette technique est utilisée pour créer des modèles de 1 à 3 milliards de paramètres capables de gérer l'intégralité du manuel utilisateur d'un véhicule ou les protocoles de maintenance prédictive. L'élagage structurel complète cette approche en supprimant les neurones et les connexions redondantes, permettant à un modèle comme Phi-3 Mini de perdre jusqu'à 2 milliards de paramètres tout en conservant ses capacités d'appel de fonctions pour le contrôle des réglages du véhicule.</p>
+            <p>La distillation de connaissances est un processus où un modèle compact apprend à reproduire le comportement d'un modèle large. Dans l'automobile, cette technique est utilisée pour créer des modèles de 1 à 3 milliards de paramètres capables de gérer l'intégralité du manuel utilisateur d'un véhicule ou les protocoles de maintenance prédictive. L'élagage structurel complète cette approche en supprimant les neurones et les connexions redondantes, permettant à un modèle comme Phi-3 Mini de perdre jusqu'à 2 milliards de paramètres tout en conservant ses capacités d'appel de fonctions pour le contrôle des réglages du véhicule. <a href="#src-11" class="source-ref">[11]</a></p>
     
             <h3>Décodage spéculatif et Optimisation du Runtime</h3>
             <p>Pour pallier la lenteur intrinsèque de la génération de texte jeton par jeton, le framework NVIDIA TensorRT Edge-LLM utilise le décodage spéculatif EAGLE-3. Un "modèle de brouillon" (draft model) léger prédit plusieurs jetons futurs en parallèle, qui sont ensuite validés en une seule étape par le modèle cible plus lourd. Cette méthode augmente considérablement le débit (tokens per second) sans augmenter la charge de calcul globale.</p>
@@ -133,20 +138,18 @@
 
         <section>
             <ul>
-                <li><a href="https://www.nvidia.com/fr-fr/solutions/autonomous-vehicles/in-vehicle-computing/" target="_blank">NVIDIA In-Vehicle Computing Solutions</a></li>
-                <li><a href="https://www.oreateai.com/blog/the-battle-of-the-titans-qualcomm-vs-nvidia-in-automotive-chipsets/bc7c92e0be40926ab22df4ba53c96711" target="_blank">The Battle of the Titans: Qualcomm vs NVIDIA in Automotive Chipsets</a></li>
-                <li><a href="https://electrek.co/2025/11/25/tesla-ai4-vs-nvidia-thor-reality-self-driving-computers/" target="_blank">Tesla AI4 vs NVIDIA Thor: Reality of Self-Driving Computers</a></li>
-                <li><a href="https://en.eeworld.com.cn/news/qcdz/eic680631.html" target="_blank">Automotive Chipset Technologies Overview</a></li>
-                <li><a href="https://www.giiresearch.com/report/rinc1777120-automotive-cockpit-domain-controller-research.html" target="_blank">Automotive Cockpit Domain Controller Research</a></li>
-                <li><a href="https://developer.nvidia.com/blog/introducing-nvidia-jetson-thor-the-ultimate-platform-for-physical-ai/" target="_blank">Introducing NVIDIA Jetson Thor: The Ultimate Platform for Physical AI</a></li>
-                <li><a href="https://nvidianews.nvidia.com/news/alpamayo-autonomous-vehicle-development" target="_blank">Alpamayo: Autonomous Vehicle Development</a></li>
-                <li><a href="https://www.amd.com/en/developer/resources/technical-articles/2025/amd-quark-model-optimization-library-now-available-as-open-sourc.html" target="_blank">AMD Quark Model Optimization Library Open Source</a></li>
-                <li><a href="https://www.forgenex.com/en/blog/llama-3-vs-mistral-vs-phi-3-que-llm-autohospedado-elegir-para-tareas-de-negocio" target="_blank">Llama 3 vs Mistral vs Phi 3: Choosing Self-Hosted LLMs</a></li>
-                <li><a href="https://mistral.ai/news/mistral-3" target="_blank">Mistral 3 Announcement</a></li>
-                <li><a href="https://azure.microsoft.com/fr-fr/products/phi" target="_blank">Microsoft Phi Language Models</a></li>
-                <li><a href="https://www.llama.com/models/llama-3/" target="_blank">Llama 3 Models</a></li>
-                <li><a href="https://arxiv.org/abs/2602.15143" target="_blank">Protecting Language Models Against Unauthorized Distillation through Trace Rewriting</a></li>
-                <li><a href="https://arxiv.org/abs/2501.02342v1" target="_blank">Optimizing Small Language Models for In-Vehicle Function-Calling</a></li>
+                <li><a id="#src-1" href="https://azure.microsoft.com/fr-fr/products/phi" target="_blank">Microsoft Phi Language Models</a></li>
+                <li><a id="#src-2" href="https://arxiv.org/abs/2501.02342v1" target="_blank">Optimizing Small Language Models for In-Vehicle Function-Calling</a></li>
+                <li><a id="#src-3" href="https://nvidianews.nvidia.com/news/alpamayo-autonomous-vehicle-development" target="_blank">Alpamayo: Autonomous Vehicle Development</a></li>
+                <li><a id="#src-4" href="https://www.llama.com/models/llama-3/" target="_blank">Llama 3 Models</a></li>
+                <li><a id="#src-5" href="https://mistral.ai/news/mistral-3" target="_blank">Mistral 3 Announcement</a></li>
+                <li><a id="#src-6" href="https://arxiv.org/abs/2602.15143" target="_blank">Protecting Language Models Against Unauthorized Distillation through Trace Rewriting</a></li>
+                <li><a id="#src-7" href="https://developer.nvidia.com/drive/agx" target="_blank">DRIVE AGX Developer Kits</a></li>
+                <li><a id="#src-8" href="https://developer.nvidia.com/blog/introducing-nvidia-jetson-thor-the-ultimate-platform-for-physical-ai/" target="_blank">Introducing NVIDIA Jetson Thor: The Ultimate Platform for Physical AI</a></li>
+                <li><a id="#src-9" href="https://www.qualcomm.com/automotive/products/elite" target="_blank">Qualcomm Snapdragon Elite</a></li>
+                <li><a id="#src-10" href="https://en.eeworld.com.cn/news/qcdz/eic680631.html" target="_blank">Automotive Chipset Technologies Overview</a></li>
+                <li><a id="#src-11" href="https://www.amd.com/en/developer/resources/technical-articles/2025/amd-quark-model-optimization-library-now-available-as-open-sourc.html" target="_blank">AMD Quark Model Optimization Library Open Source</a></li>
+                <li><a id="#src-12" href="https://www.giiresearch.com/report/rinc1777120-automotive-cockpit-domain-controller-research.html" target="_blank">Automotive Cockpit Domain Controller Research</a></li>
             </ul>
         </section>
 
