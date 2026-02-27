@@ -59,21 +59,21 @@ function buildRoadParticles() {
     const pos = new Float32Array(N * 3);
     const col = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
-    const t    = i / N;
-    const pt   = roadCurve.getPoint(t);
-    const tan  = roadCurve.getTangent(t);
-    const perp = new THREE.Vector3(-tan.z, 0, tan.x).normalize();
-    const spread = (Math.random() - 0.5) * roadW;
-    pos[i*3]   = pt.x + perp.x * spread;
-    pos[i*3+1] = pt.y - 0.18 + (Math.random() - 0.5) * 0.25;
-    pos[i*3+2] = pt.z + perp.z * spread;
-    const centre = Math.abs(spread) < 0.3;
-    const br = centre ? 0.55 : 0.18 + Math.random() * 0.12;
-    col[i*3]=br*0.9; col[i*3+1]=br*0.95; col[i*3+2]=br;
+        const t    = i / N;
+        const pt   = roadCurve.getPoint(t);
+        const tan  = roadCurve.getTangent(t);
+        const perp = new THREE.Vector3(-tan.z, 0, tan.x).normalize();
+        const spread = (Math.random() - 0.5) * roadW;
+        pos[i*3]   = pt.x + perp.x * spread;
+        pos[i*3+1] = pt.y - 0.18 + (Math.random() - 0.5) * 0.25;
+        pos[i*3+2] = pt.z + perp.z * spread;
+        const centre = Math.abs(spread) < 0.3;
+        const br = centre ? 0.55 : 0.18 + Math.random() * 0.12;
+        col[i*3]=br*0.7; col[i*3+1]=br*0.7; col[i*3+2]=br*0.7;
     }
     const g = makeParticleGeo(pos, col);
     return new THREE.Points(g, new THREE.PointsMaterial({
-    size: 0.18, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.7,
+        size: 0.18, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.7,
     }));
 }
 
@@ -83,24 +83,24 @@ function buildTerrain() {
     const pos = new Float32Array(N * 3);
     const col = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
-    const t  = Math.random();
-    const pt = roadCurve.getPoint(t);
-    const rx = (Math.random() - 0.5) * 160;
-    const rz = (Math.random() - 0.5) * 40;
-    const x  = pt.x + rx;
-    const z  = pt.z + rz;
-    const bump = Math.sin(x*0.08)*8 + Math.cos(z*0.12)*6
-                + Math.sin(x*0.03+z*0.04)*15 + (Math.random()-0.5)*3;
-    const y  = pt.y - 0.5 + bump * (Math.abs(rx) / 80);
-    pos[i*3]=x; pos[i*3+1]=y; pos[i*3+2]=z;
-    const relH = (y - pt.y + 20) / 45;
-    col[i*3]  =THREE.MathUtils.lerp(0.05,0.9, Math.min(1,relH*1.2));
-    col[i*3+1]=THREE.MathUtils.lerp(0.12,0.9, Math.min(1,relH));
-    col[i*3+2]=THREE.MathUtils.lerp(0.05,0.95,Math.min(1,relH*0.9));
+        const t  = Math.random();
+        const pt = roadCurve.getPoint(t);
+        const rx = (Math.random() - 0.5) * 160;
+        const rz = (Math.random() - 0.5) * 40;
+        const x  = pt.x + rx;
+        const z  = pt.z + rz;
+        const bump = Math.sin(x*0.08)*8 + Math.cos(z*0.12)*6
+                    + Math.sin(x*0.03+z*0.04)*15 + (Math.random()-0.5)*3;
+        const y  = pt.y - 0.5 + bump * (Math.abs(rx) / 80);
+        pos[i*3]=x; pos[i*3+1]=y; pos[i*3+2]=z;
+        // grey gradient based on height
+        const relH = Math.min(1, Math.max(0, (y - pt.y + 20) / 45));
+        const gr = THREE.MathUtils.lerp(0.08, 0.55, relH);
+        col[i*3]=gr; col[i*3+1]=gr; col[i*3+2]=gr;
     }
     const g = makeParticleGeo(pos, col);
     return new THREE.Points(g, new THREE.PointsMaterial({
-    size: 0.22, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.65,
+        size: 0.22, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.65,
     }));
 }
 
@@ -136,12 +136,13 @@ let carBodyPoints = null;   // reference to the merged body Points
 
 // ── Colour map ────────────────────────────────────────────────────────────────
 const COLOR_MAP = {
-    body: 0x2266ee, glass: 0x99ddff, window: 0x99ddff, windshield: 0x99ddff,
-    wheel: 0x333333, tire: 0x222222, rim: 0xbbbbcc, light: 0xffeeaa,
-    headlight: 0xffeeaa, interior: 0x553322, bumper: 0x1a55dd,
-    hood: 0x2266ee, roof: 0x2266ee, door: 0x2266ee, trunk: 0x2266ee,
-    chrome: 0xddddee, mirror: 0x2266ee, default: 0x4488ff,
+    body: 0xffffff, glass: 0xccddff, window: 0xccddff, windshield: 0xccddff,
+    wheel: 0x555555, tire: 0x444444, rim: 0xdddddd, light: 0xffffff,
+    headlight: 0xffffff, interior: 0x888888, bumper: 0xeeeeee,
+    hood: 0xffffff, roof: 0xffffff, door: 0xffffff, trunk: 0xffffff,
+    chrome: 0xffffff, mirror: 0xeeeeee, default: 0xdddddd,
 };
+
 function getColor(name) {
     const l = (name || '').toLowerCase();
     for (const [k, v] of Object.entries(COLOR_MAP)) if (l.includes(k)) return v;
