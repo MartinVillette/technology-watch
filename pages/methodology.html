@@ -1,140 +1,181 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Méthodologie de Veille & Architecture Technique</title>
-    <style>
-        /* Style appliqué UNIQUEMENT au bloc de code Apps Script */
-        .code-block-wrapper {
-            background-color: #1e1e2e;
-            border-radius: 8px;
-            padding: 0;
-            margin: 1.5rem 0;
-            font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 0.85rem;
-            overflow: hidden;
-            border: 1px solid #313244;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .code-block-header {
-            background-color: #313244;
-            color: #cdd6f4;
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        .code-block-header::before {
-            content: '';
-            display: inline-block;
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            background-color: #f38ba8;
-            box-shadow: 20px 0 0 #fab387, 40px 0 0 #a6e3a1;
-        }
-        .code-block-wrapper pre {
-            margin: 0;
-            padding: 1.2rem 1.5rem;
-            overflow-x: auto;
-            line-height: 1.6;
-            color: #cdd6f4;
-        }
-        /* Coloration syntaxique manuelle */
-        .c-keyword   { color: #cba6f7; } /* const, function, let, return, if, while */
-        .c-string    { color: #a6e3a1; } /* "strings" */
-        .c-comment   { color: #6c7086; font-style: italic; } /* // comments */
-        .c-function  { color: #89b4fa; } /* function names */
-        .c-number    { color: #fab387; } /* numbers */
-        .c-operator  { color: #89dceb; } /* =>, =, + */
-        .c-template  { color: #f9e2af; } /* template literals */
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Méthodologie</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/cursor.js" defer></script>
+  <style>
+    .code-block-wrapper {
+      background-color: #1e1e2e;
+      border-radius: 8px;
+      padding: 0;
+      margin: 1.5rem 0;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.85rem;
+      overflow: hidden;
+      border: 1px solid #313244;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .code-block-header {
+      background-color: #313244;
+      color: #cdd6f4;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .code-block-header::before {
+      content: '';
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background-color: #f38ba8;
+      box-shadow: 20px 0 0 #fab387, 40px 0 0 #a6e3a1;
+    }
+    .code-block-wrapper pre {
+      margin: 0;
+      padding: 1.2rem 1.5rem;
+      overflow-x: auto;
+      line-height: 1.6;
+      color: #cdd6f4;
+    }
+    .c-keyword  { color: #cba6f7; }
+    .c-string   { color: #a6e3a1; }
+    .c-comment  { color: #6c7086; font-style: italic; }
+    .c-function { color: #89b4fa; }
+    .c-number   { color: #fab387; }
+    .c-operator { color: #89dceb; }
+    .c-template { color: #f9e2af; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>L'Ère de l'AI-Defined Vehicle (AIDV)</h1>
-        <nav>
-            <a href="../index.html" class="active">Accueil & Contexte</a>
-            <a href="models.html">Modèles & Hardware</a>
-            <a href="use_cases.html">Cas d'Usage & Marché</a>
-            <a href="future.html">Vision 2030</a>
-            <a href="methodology.html">Méthodologie</a>
-        </nav>
-    </header>
+  <canvas id="c"></canvas>
 
-    <main>
-        <section>
-            <h1>Méthodologie & Stack Technique</h2>
-            <p>Cette veille est le résultat d'une approche hybride combinant traitement humain et automatisation par Intelligence Artificielle. Le processus se divise en deux flux distincts : la constitution du corpus documentaire de base et la veille temps réel automatisée.</p>
-        </section>
+  <header>
+    <nav>
+      <a href="../index.html">Accueil & Contexte</a>
+      <a href="models.html">Modèles & Hardware</a>
+      <a href="use_cases.html">Cas d'Usage & Marché</a>
+      <a href="future.html">Vision 2030</a>
+      <a href="methodology.html" class="active">Méthodologie</a>
+    </nav>
+  </header>
 
-        <hr>
+  <div id="scroll-space">
+    <div style="height:100vh;pointer-events:none;"></div>
 
-        <section>
-            <h2>1. Stratégie de Recherche & Définition du Périmètre</h2>
-            <p>En amont de la rédaction, l'environnement technologique a été cartographié à l'aide de moteurs de recherche conversationnels avancés tels que Perplexity et Gemini (mode Deep Search). Ces outils ont permis d'identifier rapidement les concepts émergents : SLM, Physical AI, VLA Models, ainsi que les acteurs clés comme NVIDIA Thor ou Qualcomm Oryon, tout en écartant les sources généralistes trop superficielles au profit de blogs techniques de niche (NVIDIA Developer Blog, Hugging Face Papers).</p>
-            <p>Cette phase a également abouti à la génération de requêtes booléennes complexes destinées à filtrer le bruit informationnel, par exemple : <code>"Small Language Model" AND "Automotive" - "Cloud"</code>. L'objectif était de délimiter précisément le périmètre de la veille avant toute collecte automatisée.</p>
-        </section>
+    <div class="drive-gap"></div>
 
-        <section>
-            <h2>2. Collecte & Curation (Zotero & RSS)</h2>
-            <p>La sélection des articles fondateurs du site repose sur une agrégation stricte via Zotero, utilisé comme agrégateur RSS central. Les flux des blogs d'ingénierie y ont été regroupés aux côtés d'alertes Google configurées sur des thématiques précises (par exemple, <em>"Mistral 7B Automotive"</em>) et redirigées en flux RSS plutôt que par email, permettant une intégration directe dans l'outil de tri.</p>
-            <p>Chaque article retenu pour la rédaction a ensuite fait l'objet d'une lecture manuelle, d'un tagage thématique et d'un archivage dans Zotero, garantissant la traçabilité et la fiabilité des sources citées sur ce site.</p>
-        </section>
+    <!-- 01 - INTRO -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">01 - MÉTHODOLOGIE</span>
+        <h2>Méthodologie & Stack Technique</h2>
+        <p>Cette veille est le résultat d'une approche hybride combinant traitement humain et automatisation par Intelligence Artificielle. Le processus se divise en deux flux distincts : la constitution du corpus documentaire de base et la veille temps réel automatisée.</p>
+      </div>
+    </section>
 
-        <hr>
+    <div class="drive-gap"></div>
 
-        <section>
-            <h2>3. Architecture d'Automatisation (Live Feed)</h2>
-            <p>Le flux d'actualités présent en bas de chaque page de ce site est entièrement automatisé via une architecture <em>Serverless</em> et Low-Code, articulée autour de trois composants : la collecte des flux, le filtrage par IA, et l'exposition des données via une API JSON.</p>
+    <!-- 02 - STRATÉGIE -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">02 - STRATÉGIE DE RECHERCHE</span>
+        <h2>Stratégie de Recherche & Définition du Périmètre</h2>
+        <p>En amont de la rédaction, l'environnement technologique a été cartographié à l'aide de moteurs de recherche conversationnels avancés tels que Perplexity et Gemini (mode Deep Search). Ces outils ont permis d'identifier rapidement les concepts émergents : SLM, Physical AI, VLA Models, ainsi que les acteurs clés comme NVIDIA Thor ou Qualcomm Oryon, tout en écartant les sources généralistes trop superficielles au profit de blogs techniques de niche (NVIDIA Developer Blog, Hugging Face Papers).</p>
+        <p>Cette phase a également abouti à la génération de requêtes booléennes complexes destinées à filtrer le bruit informationnel, par exemple : <code>"Small Language Model" AND "Automotive" - "Cloud"</code>. L'objectif était de délimiter précisément le périmètre de la veille avant toute collecte automatisée.</p>
+      </div>
+    </section>
 
-            <h3>A. Collecte Automatisée (Google Apps Script)</h3>
-            <p>Un script personnalisé hébergé sur Google Cloud s'exécute automatiquement chaque jour. Il scanne une liste de flux RSS couvrant des sources spécialisées : blogs NVIDIA, arXiv, Reddit r/LocalLLaMA, Hugging Face Trending, ainsi que huit alertes Google configurées sur des mots-clés ciblés. Pour chaque flux, le script détecte automatiquement le format (Atom ou RSS standard), extrait les titres, liens et dates de publication, et dédoublonne les entrées via une comparaison avec les liens déjà stockés en base.</p>
+    <div class="drive-gap"></div>
 
-            <h4>Flux RSS surveillés</h4>
-            <ul>
-                <li>https://blogs.nvidia.com/blog/category/auto/feed/</li>
-                <li>http://export.arxiv.org/api/query?search_query=all:quantization+AND+all:LLM&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending</li>
-                <li>https://feeds.feedburner.com/nvidiablog</li>
-                <li>http://export.arxiv.org/rss/cs.AI</li>
-                <li>https://techcrunch.com/category/artificial-intelligence/feed/</li>
-                <li>https://www.reddit.com/r/LocalLLaMA/top/.rss?t=week</li>
-                <li>https://zernel.github.io/huggingface-trending-feed/feed.xml</li>
-            </ul>
+    <!-- 03 - COLLECTE -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">03 - COLLECTE & CURATION</span>
+        <h2>Collecte & Curation (Zotero & RSS)</h2>
+        <p>La sélection des articles fondateurs du site repose sur une agrégation stricte via Zotero, utilisé comme agrégateur RSS central. Les flux des blogs d'ingénierie y ont été regroupés aux côtés d'alertes Google configurées sur des thématiques précises (par exemple, <em>"Mistral 7B Automotive"</em>) et redirigées en flux RSS plutôt que par email, permettant une intégration directe dans l'outil de tri.</p>
+        <p>Chaque article retenu pour la rédaction a ensuite fait l'objet d'une lecture manuelle, d'un tagage thématique et d'un archivage dans Zotero, garantissant la traçabilité et la fiabilité des sources citées sur ce site.</p>
+      </div>
+    </section>
 
-            <h4>Google Alerts configurées</h4>
-            <ul>
-                <li>("Agentic AI" OR "Function calling") AND ("Vehicle control" OR "ADAS" OR "Voice assistant" OR "Automotive")</li>
-                <li>("Generative AI" OR "LLM" OR "SLM") AND "Automotive" AND ("Safety" OR "Hallucination" OR "Latency" OR "Privacy")</li>
-                <li>("NVIDIA DRIVE Thor" OR "Snapdragon Digital Chassis" OR "Qualcomm" OR "Intel Automotive") AND ("GenAI" OR "LLM" OR "NPU" OR "SLM" OR "AI")</li>
-                <li>("SLM" OR "Small Language Model" OR "TinyML") AND ("Automotive" OR "In-vehicle" OR "Cockpit")</li>
-                <li>("Snapdragon Digital Chassis" OR "NVIDIA DRIVE Thor" OR "Mobileye EyeQ") AND ("Quantization" OR "INT8" OR "Pruning")</li>
-                <li>("Stellantis" OR "Volkswagen" OR "Renault" OR "BMW" OR "Mercedes" OR "Waymo" OR "Weride") AND ("SLM" OR "Mistral AI" OR "Llama" OR "Generative AI" OR "ChatGPT" OR "LLM" OR "Language model")</li>
-                <li>site:arxiv.org ("Small Language Model" OR "SLM" OR "Edge AI") AND ("Automotive" OR "Vehicle")</li>
-            </ul>
+    <div class="drive-gap"></div>
 
-            <h3>B. Filtrage Intelligent (IA via API Groq)</h3>
-            <p>Pour éviter le "bruit" informationnel, chaque titre d'article est soumis à un modèle de langage (Llama 3.1 8B) via l'API Groq. Le prompt impose un arbre de décision strict en deux étapes : d'abord un filtre de rejet pour les sujets hors-scope (médecine, finance, crypto), puis une catégorisation parmi six tags : <em>hardware, software_models, use_cases, manufacturers, future, contexte</em>. Tout article non classifiable est rejeté avec le label <em>autre</em>. Un mécanisme de retry (3 tentatives, pause de 10s sur erreur 429) assure la robustesse face aux limites de débit de l'API.</p>
+    <!-- 04 - ARCHITECTURE -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">04 - ARCHITECTURE D'AUTOMATISATION</span>
+        <h2>Architecture d'Automatisation (Live Feed)</h2>
+        <p>Le flux d'actualités présent en bas de chaque page de ce site est entièrement automatisé via une architecture <em>Serverless</em> et Low-Code, articulée autour de trois composants : la collecte des flux, le filtrage par IA, et l'exposition des données via une API JSON.</p>
+      </div>
+    </section>
 
-            <h3>C. Stockage & API (Google Sheets)</h3>
-            <p>Les articles validés sont écrits dans une feuille Google Sheets jouant le rôle de base de données légère. Cette même feuille est exposée en tant qu'API JSON publique via la fonction <code>doGet()</code>, qui retourne les 50 articles les plus récents, triés par date décroissante, directement consommables par le navigateur de l'utilisateur sans aucun backend intermédiaire.</p>
+    <div class="drive-gap"></div>
 
-            <div class="code-block-wrapper">
-                <div class="code-block-header">Apps Script - Google Sheets Automation</div>
-                <pre><code><span class="c-comment">// 1. CONFIGURATION</span>
+    <!-- 05 - COLLECTE APPS SCRIPT -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">05 - COLLECTE AUTOMATISÉE</span>
+        <h2>A. Collecte Automatisée (Google Apps Script)</h2>
+        <p>Un script personnalisé hébergé sur Google Cloud s'exécute automatiquement chaque jour. Il scanne une liste de flux RSS couvrant des sources spécialisées : blogs NVIDIA, arXiv, Reddit r/LocalLLaMA, Hugging Face Trending, ainsi que huit alertes Google configurées sur des mots-clés ciblés. Pour chaque flux, le script détecte automatiquement le format (Atom ou RSS standard), extrait les titres, liens et dates de publication, et dédoublonne les entrées via une comparaison avec les liens déjà stockés en base.</p>
+
+        <h3 style="margin-top:1.2rem;margin-bottom:0.5rem;">Flux RSS surveillés</h3>
+        <ul>
+          <li>https://blogs.nvidia.com/blog/category/auto/feed/</li>
+          <li>http://export.arxiv.org/api/query?search_query=all:quantization+AND+all:LLM&start=0&max_results=10</li>
+          <li>https://feeds.feedburner.com/nvidiablog</li>
+          <li>http://export.arxiv.org/rss/cs.AI</li>
+          <li>https://techcrunch.com/category/artificial-intelligence/feed/</li>
+          <li>https://www.reddit.com/r/LocalLLaMA/top/.rss?t=week</li>
+          <li>https://zernel.github.io/huggingface-trending-feed/feed.xml</li>
+        </ul>
+
+        <h3 style="margin-top:1.2rem;margin-bottom:0.5rem;">Google Alerts configurées</h3>
+        <ul>
+          <li>("Agentic AI" OR "Function calling") AND ("Vehicle control" OR "ADAS" OR "Voice assistant" OR "Automotive")</li>
+          <li>("Generative AI" OR "LLM" OR "SLM") AND "Automotive" AND ("Safety" OR "Hallucination" OR "Latency" OR "Privacy")</li>
+          <li>("NVIDIA DRIVE Thor" OR "Snapdragon Digital Chassis" OR "Qualcomm" OR "Intel Automotive") AND ("GenAI" OR "LLM" OR "NPU" OR "SLM" OR "AI")</li>
+          <li>("SLM" OR "Small Language Model" OR "TinyML") AND ("Automotive" OR "In-vehicle" OR "Cockpit")</li>
+          <li>("Snapdragon Digital Chassis" OR "NVIDIA DRIVE Thor" OR "Mobileye EyeQ") AND ("Quantization" OR "INT8" OR "Pruning")</li>
+          <li>("Stellantis" OR "Volkswagen" OR "Renault" OR "BMW" OR "Mercedes" OR "Waymo" OR "Weride") AND ("SLM" OR "Mistral AI" OR "Llama" OR "Generative AI")</li>
+          <li>site:arxiv.org ("Small Language Model" OR "SLM" OR "Edge AI") AND ("Automotive" OR "Vehicle")</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 06 - FILTRAGE GROQ -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">06 - FILTRAGE IA</span>
+        <h2>B. Filtrage Intelligent (IA via API Groq)</h2>
+        <p>Pour éviter le "bruit" informationnel, chaque titre d'article est soumis à un modèle de langage (Llama 3.1 8B) via l'API Groq. Le prompt impose un arbre de décision strict en deux étapes : d'abord un filtre de rejet pour les sujets hors-scope (médecine, finance, crypto), puis une catégorisation parmi six tags : <em>hardware, software_models, use_cases, manufacturers, future, contexte</em>. Tout article non classifiable est rejeté avec le label <em>autre</em>. Un mécanisme de retry (3 tentatives, pause de 10s sur erreur 429) assure la robustesse face aux limites de débit de l'API.</p>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 07 - STOCKAGE & API -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">07 - STOCKAGE & API</span>
+        <h2>C. Stockage & API (Google Sheets)</h2>
+        <p>Les articles validés sont écrits dans une feuille Google Sheets jouant le rôle de base de données légère. Cette même feuille est exposée en tant qu'API JSON publique via la fonction <code>doGet()</code>, qui retourne les 50 articles les plus récents, triés par date décroissante, directement consommables par le navigateur de l'utilisateur sans aucun backend intermédiaire.</p>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">Apps Script – Google Sheets Automation</div>
+          <pre><code><span class="c-comment">// 1. CONFIGURATION</span>
 <span class="c-keyword">const</span> GROQ_API_KEY <span class="c-operator">=</span> <span class="c-string">"gsk_xxx"</span>;
 <span class="c-keyword">const</span> GROQ_MODEL   <span class="c-operator">=</span> <span class="c-string">"llama-3.1-8b-instant"</span>;
 
 <span class="c-keyword">const</span> RSS_URLS <span class="c-operator">=</span> [
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/13514125029556601403"</span>,
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/537131559348505229"</span>,
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/9110558325910702791"</span>,
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/4122885177354724118"</span>,
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/103813396756190836"</span>,
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/9945621874752529365"</span>,
-  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/6848064440929761067"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/xxx/alert1"</span>,
   <span class="c-string">"https://www.reddit.com/r/LocalLLaMA/top/.rss?t=week"</span>,
   <span class="c-string">"https://blogs.nvidia.com/blog/category/auto/feed/"</span>,
   <span class="c-string">"http://export.arxiv.org/api/query?search_query=all:quantization+AND+all:LLM&amp;start=0&amp;max_results=10&amp;sortBy=submittedDate&amp;sortOrder=descending"</span>,
@@ -150,201 +191,138 @@
 
   <span class="c-keyword">const</span> lastRow <span class="c-operator">=</span> sheet.getLastRow();
   <span class="c-comment">// Mémoire des liens existants pour éviter les doublons</span>
-  <span class="c-keyword">const</span> existingLinks <span class="c-operator">=</span> lastRow <span class="c-operator">&gt;</span> <span class="c-number">1</span> <span class="c-operator">?</span> sheet.getRange(<span class="c-number">2</span>, <span class="c-number">3</span>, lastRow <span class="c-operator">-</span> <span class="c-number">1</span>).getValues().flat() : [];
+  <span class="c-keyword">const</span> existingLinks <span class="c-operator">=</span> lastRow <span class="c-operator">&gt;</span> <span class="c-number">1</span>
+    <span class="c-operator">?</span> sheet.getRange(<span class="c-number">2</span>, <span class="c-number">3</span>, lastRow <span class="c-operator">-</span> <span class="c-number">1</span>).getValues().flat()
+    : [];
 
   RSS_URLS.forEach(url <span class="c-operator">=&gt;</span> {
     <span class="c-keyword">try</span> {
-      console.log(<span class="c-string">"Lecture du flux : "</span> <span class="c-operator">+</span> url);
-      <span class="c-comment">// Récupération sécurisée du flux</span>
       <span class="c-keyword">const</span> response <span class="c-operator">=</span> UrlFetchApp.fetch(url, {muteHttpExceptions: <span class="c-keyword">true</span>});
-      <span class="c-keyword">if</span> (response.getResponseCode() <span class="c-operator">!==</span> <span class="c-number">200</span>) {
-        console.log(<span class="c-string">"Erreur d'accès au flux : "</span> <span class="c-operator">+</span> url);
-        <span class="c-keyword">return</span>;
-      }
-      <span class="c-keyword">const</span> xml <span class="c-operator">=</span> response.getContentText();
-      <span class="c-keyword">const</span> document <span class="c-operator">=</span> XmlService.parse(xml);
-      <span class="c-keyword">const</span> root <span class="c-operator">=</span> document.getRootElement();
+      <span class="c-keyword">if</span> (response.getResponseCode() <span class="c-operator">!==</span> <span class="c-number">200</span>) <span class="c-keyword">return</span>;
 
-      <span class="c-comment">// Gestion des namespaces (Atom vs RSS standard)</span>
+      <span class="c-keyword">const</span> root <span class="c-operator">=</span> XmlService.parse(response.getContentText()).getRootElement();
       <span class="c-keyword">const</span> atom <span class="c-operator">=</span> XmlService.getNamespace(<span class="c-string">'http://www.w3.org/2005/Atom'</span>);
-      <span class="c-keyword">let</span> entries <span class="c-operator">=</span> [];
+      <span class="c-keyword">let</span> entries <span class="c-operator">=</span> root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>
+        <span class="c-operator">?</span> root.getChildren(<span class="c-string">'entry'</span>, atom)
+        : (root.getChild(<span class="c-string">'channel'</span>) <span class="c-operator">||</span> root).getChildren(<span class="c-string">'item'</span>);
 
-      <span class="c-comment">// Détection du format (Atom a des "entry", RSS a des "item")</span>
-      <span class="c-keyword">if</span> (root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>) {
-        entries <span class="c-operator">=</span> root.getChildren(<span class="c-string">'entry'</span>, atom);
-      } <span class="c-keyword">else</span> {
-        <span class="c-comment">// Fallback pour RSS standard si besoin</span>
-        <span class="c-keyword">const</span> channel <span class="c-operator">=</span> root.getChild(<span class="c-string">'channel'</span>);
-        <span class="c-keyword">if</span> (channel) entries <span class="c-operator">=</span> channel.getChildren(<span class="c-string">'item'</span>);
-      }
-
-      <span class="c-comment">// --- OPTIMISATION CRITIQUE POUR HUGGING FACE &amp; GROQ ---</span>
-      <span class="c-comment">// Si c'est Hugging Face, on ne prend que les 5 derniers pour ne pas saturer</span>
-      <span class="c-comment">// Pour les autres, on limite à 10 par sécurité</span>
-      <span class="c-keyword">let</span> limit <span class="c-operator">=</span> url.includes(<span class="c-string">"huggingface"</span>) <span class="c-operator">?</span> <span class="c-number">5</span> : <span class="c-number">10</span>;
-      entries <span class="c-operator">=</span> entries.slice(<span class="c-number">0</span>, limit);
+      <span class="c-comment">// Limite : 5 pour Hugging Face, 10 pour les autres</span>
+      entries <span class="c-operator">=</span> entries.slice(<span class="c-number">0</span>, url.includes(<span class="c-string">"huggingface"</span>) <span class="c-operator">?</span> <span class="c-number">5</span> : <span class="c-number">10</span>);
 
       entries.forEach(entry <span class="c-operator">=&gt;</span> {
-        <span class="c-comment">// Extraction lien et titre (compatible Atom/RSS)</span>
-        <span class="c-keyword">let</span> link <span class="c-operator">=</span> <span class="c-string">""</span>;
-        <span class="c-keyword">let</span> title <span class="c-operator">=</span> <span class="c-string">""</span>;
-        <span class="c-keyword">let</span> published <span class="c-operator">=</span> <span class="c-string">""</span>;
+        <span class="c-keyword">let</span> link, title, published;
 
         <span class="c-keyword">if</span> (root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>) { <span class="c-comment">// ATOM</span>
-          <span class="c-keyword">const</span> linkElem <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>, atom);
-          link      <span class="c-operator">=</span> linkElem <span class="c-operator">?</span> linkElem.getAttribute(<span class="c-string">'href'</span>).getValue() : <span class="c-string">""</span>;
+          link      <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>, atom).getAttribute(<span class="c-string">'href'</span>).getValue();
           title     <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>, atom).getText();
-          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'published'</span>, atom) <span class="c-operator">?</span> entry.getChild(<span class="c-string">'published'</span>, atom).getText() : <span class="c-keyword">new</span> Date().toISOString();
+          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'published'</span>, atom)<span class="c-operator">?.</span>getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
         } <span class="c-keyword">else</span> { <span class="c-comment">// RSS</span>
           link      <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>).getText();
           title     <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>).getText();
-          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'pubDate'</span>) <span class="c-operator">?</span> entry.getChild(<span class="c-string">'pubDate'</span>).getText() : <span class="c-keyword">new</span> Date().toISOString();
+          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'pubDate'</span>)<span class="c-operator">?.</span>getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
         }
 
-        <span class="c-comment">// Nettoyage HTML du titre</span>
         title <span class="c-operator">=</span> title.replace(<span class="c-operator">/</span>&lt;[^&gt;]+&gt;<span class="c-operator">/g</span>, <span class="c-string">''</span>);
 
-        <span class="c-comment">// --- BARRIÈRE N°1 : Dédoublonnage ---</span>
+        <span class="c-comment">// Barrière n°1 : Dédoublonnage</span>
         <span class="c-keyword">if</span> (existingLinks.includes(link)) <span class="c-keyword">return</span>;
 
-        <span class="c-comment">// --- APPEL SÉCURISÉ AVEC RETRY ---</span>
         <span class="c-keyword">const</span> topic <span class="c-operator">=</span> <span class="c-function">classifyWithGroqSafe</span>(title);
 
-        <span class="c-comment">// --- BARRIÈRE N°2 : Filtrage ---</span>
+        <span class="c-comment">// Barrière n°2 : Filtrage IA</span>
         <span class="c-keyword">if</span> (topic <span class="c-operator">&amp;&amp;</span> topic <span class="c-operator">!==</span> <span class="c-string">'autre'</span>) {
           sheet.appendRow([published, title, link, topic]);
           existingLinks.push(link);
-          console.log(<span class="c-template">`Ajouté [${topic}] : ${title}`</span>);
         }
       });
     } <span class="c-keyword">catch</span> (e) {
-      console.log(<span class="c-string">"Erreur Flux RSS ("</span> <span class="c-operator">+</span> url <span class="c-operator">+</span> <span class="c-string">") : "</span> <span class="c-operator">+</span> e);
+      console.log(<span class="c-string">"Erreur flux : "</span> <span class="c-operator">+</span> e);
     }
   });
 }
 
-<span class="c-comment">// --- FONCTION INTELLIGENTE AVEC TAGS STRICTEMENT SÉPARÉS ---</span>
 <span class="c-keyword">function</span> <span class="c-function">classifyWithGroqSafe</span>(titreArticle) {
-  <span class="c-keyword">const</span> url <span class="c-operator">=</span> <span class="c-string">"https://api.groq.com/openai/v1/chat/completions"</span>;
-
   <span class="c-keyword">const</span> prompt <span class="c-operator">=</span> <span class="c-template">`
-    Tu es un classificateur ultra-strict pour une veille technologique sur l'IA Embarquée et l'Automobile.
-    Titre à analyser : "${titreArticle}"
+Tu es un classificateur ultra-strict pour une veille sur l'IA Embarquée et l'Automobile.
+Titre : "${titreArticle}"
 
-    ÉTAPE 1 : FILTRE DE REJET (HORS-SUJET)
-    Si le titre parle de médecine, biologie, finance, crypto, gadgets web, IA cloud pure (ex: ChatGPT web, Salesforce) ou création d'images sans lien avec l'automobile ou l'Edge Computing, TU DOIS RÉPONDRE : autre
+ÉTAPE 1 - REJET : médecine, finance, crypto, IA cloud pure → autre
+ÉTAPE 2 - CLASSIFICATION :
+  hardware        → puces, SoC, NPU, GPU, TOPS, semi-conducteurs
+  software_models → LLM/SLM, quantization, RAG, distillation
+  use_cases       → ADAS, V2X, cockpit, assistant vocal, diagnostic
+  manufacturers   → OEM, robotaxis, BMW, Mercedes, Tesla, Waymo
+  future          → prospective, marché 2026-2030, GreenOps, régulations
+  contexte        → reste (marché global, souveraineté données)
 
-    ÉTAPE 2 : ARBRE DE DÉCISION STRICT (Lis dans l'ordre et arrête-toi au premier qui correspond)
-
-    1. hardware : Concerne UNIQUEMENT le matériel physique. Puces, SoC, NPU, GPU, TOPS, semi-conducteurs, et les fabricants de silicium (NVIDIA, Qualcomm, Intel, AMD). Si le mot "chip", "processeur" ou "TOPS" est là -&gt; hardware.
-
-    2. software_models : Concerne UNIQUEMENT les algorithmes, les modèles d'IA purs et le code. Sortie de LLM/SLM (Qwen, Llama, Mistral), taille (ex: 8B, 70B), et méthodes d'optimisation (quantization, RAG, distillation). Si on annonce "Model X is out" -&gt; software_models.
-
-    3. use_cases : Concerne UNIQUEMENT la fonctionnalité finale dans le véhicule. Ce que fait la voiture grâce à l'IA : ADAS (aide à la conduite), V2X, cockpit intelligent, infotainment, assistant vocal, diagnostic. Si ça décrit une action sur la route ou dans l'habitacle -&gt; use_cases.
-
-    4. manufacturers : Concerne UNIQUEMENT les constructeurs automobiles (OEM), les opérateurs de Robotaxis, et leur vie d'entreprise. Annonces de BMW, Mercedes, Tesla, Waymo, WeRide, partenariats industriels, usines (AI Factory), ou déploiement d'OS maison (ex: MB.OS).
-
-    5. future : Concerne UNIQUEMENT la prospective et la stratégie à long terme. Prédictions de marché, horizons 2026-2030, régulations, futures architectures, "GreenOps" (impact écologique de l'IA), et les concepts futuristes.
-
-    6. contexte : LE RESTE. Utilise ce tag UNIQUEMENT si le titre parle du marché de l'automobile ou de l'Edge AI de manière très globale (fin du Cloud, souveraineté des données, vie privée) et qu'il ne rentre dans AUCUNE des catégories 1 à 5.
-
-    Réponds UNIQUEMENT par le mot clé exact en minuscules (hardware, software_models, use_cases, manufacturers, future, contexte, ou autre).
-  `</span>;
-
-  <span class="c-keyword">const</span> payload <span class="c-operator">=</span> {
-    <span class="c-string">"model"</span>: GROQ_MODEL,
-    <span class="c-string">"messages"</span>: [{ <span class="c-string">"role"</span>: <span class="c-string">"user"</span>, <span class="c-string">"content"</span>: prompt }],
-    <span class="c-string">"temperature"</span>: <span class="c-number">0.0</span>, <span class="c-comment">// Toujours à 0 pour éviter les hallucinations</span>
-    <span class="c-string">"max_tokens"</span>: <span class="c-number">10</span>
-  };
+Réponds UNIQUEMENT par le mot-clé exact en minuscules.`</span>;
 
   <span class="c-keyword">const</span> options <span class="c-operator">=</span> {
-    <span class="c-string">"method"</span>: <span class="c-string">"post"</span>,
-    <span class="c-string">"contentType"</span>: <span class="c-string">"application/json"</span>,
-    <span class="c-string">"headers"</span>: { <span class="c-string">"Authorization"</span>: <span class="c-string">"Bearer "</span> <span class="c-operator">+</span> GROQ_API_KEY },
-    <span class="c-string">"payload"</span>: JSON.stringify(payload),
-    <span class="c-string">"muteHttpExceptions"</span>: <span class="c-keyword">true</span>
+    method: <span class="c-string">"post"</span>, contentType: <span class="c-string">"application/json"</span>,
+    headers: { Authorization: <span class="c-string">"Bearer "</span> <span class="c-operator">+</span> GROQ_API_KEY },
+    payload: JSON.stringify({
+      model: GROQ_MODEL,
+      messages: [{ role: <span class="c-string">"user"</span>, content: prompt }],
+      temperature: <span class="c-number">0.0</span>, max_tokens: <span class="c-number">10</span>
+    }),
+    muteHttpExceptions: <span class="c-keyword">true</span>
   };
 
-  <span class="c-keyword">let</span> maxRetries <span class="c-operator">=</span> <span class="c-number">3</span>;
+  <span class="c-keyword">const</span> validTags <span class="c-operator">=</span> [<span class="c-string">"hardware"</span>,<span class="c-string">"software_models"</span>,<span class="c-string">"use_cases"</span>,<span class="c-string">"manufacturers"</span>,<span class="c-string">"future"</span>,<span class="c-string">"contexte"</span>];
   <span class="c-keyword">let</span> attempt <span class="c-operator">=</span> <span class="c-number">0</span>;
 
-  <span class="c-keyword">while</span> (attempt <span class="c-operator">&lt;</span> maxRetries) {
-    <span class="c-keyword">try</span> {
-      <span class="c-keyword">const</span> response <span class="c-operator">=</span> UrlFetchApp.fetch(url, options);
-      <span class="c-keyword">const</span> code    <span class="c-operator">=</span> response.getResponseCode();
-      <span class="c-keyword">const</span> content <span class="c-operator">=</span> response.getContentText();
+  <span class="c-keyword">while</span> (attempt <span class="c-operator">&lt;</span> <span class="c-number">3</span>) {
+    <span class="c-keyword">const</span> res  <span class="c-operator">=</span> UrlFetchApp.fetch(<span class="c-string">"https://api.groq.com/openai/v1/chat/completions"</span>, options);
+    <span class="c-keyword">const</span> code <span class="c-operator">=</span> res.getResponseCode();
 
-      <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">200</span>) {
-        <span class="c-keyword">const</span> json <span class="c-operator">=</span> JSON.parse(content);
-        <span class="c-keyword">let</span> categorie <span class="c-operator">=</span> json.choices[<span class="c-number">0</span>].message.content.trim().toLowerCase();
-
-        Utilities.sleep(<span class="c-number">4000</span>);
-
-        <span class="c-comment">// Validation stricte des nouveaux tags</span>
-        <span class="c-keyword">const</span> validTags <span class="c-operator">=</span> [<span class="c-string">"hardware"</span>, <span class="c-string">"software_models"</span>, <span class="c-string">"use_cases"</span>, <span class="c-string">"manufacturers"</span>, <span class="c-string">"future"</span>, <span class="c-string">"contexte"</span>];
-
-        <span class="c-comment">// Nettoyage au cas où l'IA fait des phrases</span>
-        <span class="c-keyword">for</span> (<span class="c-keyword">const</span> tag <span class="c-keyword">of</span> validTags) {
-          <span class="c-keyword">if</span> (categorie.includes(tag)) <span class="c-keyword">return</span> tag;
-        }
-
-        <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
-      }
-
-      <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">429</span>) {
-        console.warn(<span class="c-string">"Limite Groq atteinte (429). Pause de 10s..."</span>);
-        Utilities.sleep(<span class="c-number">10000</span>);
-        attempt++;
-      } <span class="c-keyword">else</span> {
-        console.error(<span class="c-string">"Erreur API Groq Code "</span> <span class="c-operator">+</span> code);
-        <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
-      }
-
-    } <span class="c-keyword">catch</span> (e) {
-      console.error(<span class="c-string">"Erreur connexion : "</span> <span class="c-operator">+</span> e);
-      Utilities.sleep(<span class="c-number">5000</span>);
-      attempt++;
+    <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">200</span>) {
+      <span class="c-keyword">const</span> raw <span class="c-operator">=</span> JSON.parse(res.getContentText()).choices[<span class="c-number">0</span>].message.content.trim().toLowerCase();
+      Utilities.sleep(<span class="c-number">4000</span>);
+      <span class="c-keyword">for</span> (<span class="c-keyword">const</span> tag <span class="c-keyword">of</span> validTags) { <span class="c-keyword">if</span> (raw.includes(tag)) <span class="c-keyword">return</span> tag; }
+      <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
     }
+    <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">429</span>) { Utilities.sleep(<span class="c-number">10000</span>); attempt++; }
+    <span class="c-keyword">else</span> <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
   }
   <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
 }
 
-<span class="c-comment">// --- API POUR LE SITE WEB (TRI PAR DATE) ---</span>
+<span class="c-comment">// API JSON publique pour le site web</span>
 <span class="c-keyword">function</span> <span class="c-function">doGet</span>(e) {
   <span class="c-keyword">const</span> sheet <span class="c-operator">=</span> SpreadsheetApp.getActiveSpreadsheet().getSheetByName(<span class="c-string">'Data'</span>);
-
-  <span class="c-keyword">if</span> (!sheet <span class="c-operator">||</span> sheet.getLastRow() <span class="c-operator">&lt;</span> <span class="c-number">2</span>) {
+  <span class="c-keyword">if</span> (!sheet <span class="c-operator">||</span> sheet.getLastRow() <span class="c-operator">&lt;</span> <span class="c-number">2</span>)
     <span class="c-keyword">return</span> ContentService.createTextOutput(JSON.stringify([]))
       .setMimeType(ContentService.MimeType.JSON);
-  }
 
   <span class="c-keyword">const</span> rows <span class="c-operator">=</span> sheet.getDataRange().getValues();
-  rows.shift(); <span class="c-comment">// Enlever l'en-tête</span>
+  rows.shift(); <span class="c-comment">// Supprimer l'en-tête</span>
 
-  <span class="c-keyword">let</span> data <span class="c-operator">=</span> rows.map(row <span class="c-operator">=&gt;</span> ({
-    date:  row[<span class="c-number">0</span>],
-    title: row[<span class="c-number">1</span>],
-    link:  row[<span class="c-number">2</span>],
-    topic: row[<span class="c-number">3</span>]
-  }));
-
-  <span class="c-comment">// Tri descendant (Plus récent en premier)</span>
-  data.sort((a, b) <span class="c-operator">=&gt;</span> {
-    <span class="c-keyword">return</span> <span class="c-keyword">new</span> Date(b.date) <span class="c-operator">-</span> <span class="c-keyword">new</span> Date(a.date);
-  });
-
-  <span class="c-comment">// Limite à 50 articles pour la rapidité du site</span>
-  data <span class="c-operator">=</span> data.slice(<span class="c-number">0</span>, <span class="c-number">50</span>);
+  <span class="c-keyword">let</span> data <span class="c-operator">=</span> rows
+    .map(row <span class="c-operator">=&gt;</span> ({ date: row[<span class="c-number">0</span>], title: row[<span class="c-number">1</span>], link: row[<span class="c-number">2</span>], topic: row[<span class="c-number">3</span>] }))
+    .sort((a, b) <span class="c-operator">=&gt;</span> <span class="c-keyword">new</span> Date(b.date) <span class="c-operator">-</span> <span class="c-keyword">new</span> Date(a.date))
+    .slice(<span class="c-number">0</span>, <span class="c-number">50</span>); <span class="c-comment">// 50 articles max pour la rapidité du site</span>
 
   <span class="c-keyword">return</span> ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
 }</code></pre>
-            </div>
+        </div>
 
+        <p id="google-sheet-link-container">
+          <a href="https://docs.google.com/spreadsheets/d/1oCypRQoLJ1zjwaQMwPYFEr3XLmEUstojZxdJGRdwqSU/edit?gid=0#gid=0" target="_blank" id="google-sheet-link">Accéder à la base de données Google Sheets</a>
+        </p>
+      </div>
+    </section>
 
-            <p><a href="https://docs.google.com/spreadsheets/d/1oCypRQoLJ1zjwaQMwPYFEr3XLmEUstojZxdJGRdwqSU/edit?gid=0#gid=0" target="_blank">Accéder à la base de données Google Sheets</a></p>
-        </section>
-    </main>
+    <div class="drive-gap"></div>
+    <div style="height:100vh;pointer-events:none;"></div>
+  </div>
+
+  <div id="hint">↓ Scroll pour découvrir ↓</div>
+
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <script type="module" src="../js/methodology.js"></script>
 </body>
 </html>

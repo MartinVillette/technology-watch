@@ -1,60 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accueil & Contexte</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/cursor.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>L'Ère de l'AI-Defined Vehicle (AIDV)</h1>
-        <nav>
-            <a href="index.html" class="active">Accueil & Contexte</a>
-            <a href="pages/models.html">Modèles & Hardware</a>
-            <a href="pages/use_cases.html">Cas d'Usage & Marché</a>
-            <a href="pages/future.html">Vision 2030</a>
-            <a href="pages/methodology.html">Méthodologie</a>
-        </nav>
-    </header>
+  <canvas id="c"></canvas>
+  <header>
+    <nav>
+      <a href="index.html" class="active">Accueil & Contexte</a>
+      <a href="pages/models.html">Modèles & Hardware</a>
+      <a href="pages/use_cases.html">Cas d'Usage & Marché</a>
+      <a href="pages/future.html">Vision 2030</a>
+      <a href="pages/methodology.html">Méthodologie</a>
+    </nav>
+  </header>
+  <div id="scroll-space">
+    <div style="height:100vh;pointer-events:none;"></div>
 
-    <main>
+    <div class="drive-gap"></div>
+
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">01 - CONTEXTE</span>
+        <h2>L'Ère de l'AI-Defined Vehicle</h2>
         <p>L'industrie automobile mondiale est entrée dans une phase de mutation structurelle où l'intelligence artificielle n'est plus une simple fonctionnalité ajoutée, mais le cœur battant du véhicule. Cette transition, marquée par le passage historique du véhicule défini par logiciel (Software-Defined Vehicle - SDV) au véhicule défini par l'IA (AI-Defined Vehicle - AIDV), repose sur un changement de paradigme technique : l'abandon de la dépendance exclusive au Cloud au profit de l'inférence locale via des modèles de langage compacts, ou Small Language Models (SLM). Les enseignements du CES 2025 et les récentes avancées technologiques de NVIDIA, Qualcomm et MediaTek démontrent que l'avenir de la mobilité se joue désormais à la périphérie du réseau (Edge), là où la latence, la confidentialité et la sécurité critique ne tolèrent aucune compromission.</p>
+      </div>
+    </section>
 
-        <section>
-            <h1>Transition des Architectures Cloud vers les SLM Locaux</h1>
-            <p>La transition vers les SLM locaux est dictée par l'impératif de transformer l'IA "impressionnante" des centres de données en IA "utilisable" dans le monde réel. Les modèles massifs basés sur le cloud souffrent de latences imprévisibles, de risques de conformité des données (RGPD/HIPAA) et de coûts d'API prohibitifs pour une flotte de millions de véhicules. L'IA embarquée permet désormais une exécution hors ligne totale, garantissant que des fonctions critiques comme l'assistance vocale ou le diagnostic en temps réel restent opérationnelles même dans des zones blanches. Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives, s'inscrivant dans une démarche de "GreenOps" automobile où l'efficacité logicielle devient une mesure de performance au même titre que la vitesse. <a href="#src-1" class="source-ref">[1]</a></p>
-        </section>
-    
-        <section>
-            <h2>Détails Techniques de la Transition</h2>
-            <p>L'analyse des contraintes opérationnelles montre que les modèles de langage de 3 à 7 milliards de paramètres (3B-7B) constituent le point d'équilibre optimal pour l'automobile. Ces modèles, bien que plus petits que leurs homologues de 175 milliards de paramètres, peuvent être optimisés pour surpasser les modèles généralistes sur des tâches spécialisées grâce au réglage fin (fine-tuning) et à la spécialisation par domaine. Par exemple, un modèle "Legal SLM" ou "Automotive SLM" peut atteindre une précision supérieure à GPT-4 pour des cas d'usage spécifiques tout en consommant une fraction de la puissance de calcul.</p>
-            <p>Dans un contexte de conduite, la latence est le paramètre le plus critique. Un modèle cloud subit les délais de transmission réseau, ce qui rend les interactions vocales hachées et les décisions de sécurité impossibles à grande vitesse. En déplaçant l'inférence sur le matériel in-car, les constructeurs (OEM) atteignent une latence quasi nulle, essentielle pour les agents cognitifs qui doivent interpréter l'intention du conducteur en millisecondes. De plus, la confidentialité est "intégrée par conception" (built-in) : les données vocales et les flux vidéo des caméras d'habitacle ne quittent jamais le véhicule, éliminant les risques de fuites de données et facilitant la conformité réglementaire mondiale. <a href="#src-3" class="source-ref">[3]</a></p>
-            <p>La transition architecturale s'accompagne également d'un changement de modèle économique. Le passage du modèle SaaS (Software as a Service) avec des frais récurrents à une infrastructure Edge AI permet aux OEM de maîtriser leurs coûts opérationnels sur le cycle de vie du véhicule, tout en offrant des mises à jour logicielles transparentes (OTA) pour améliorer les modèles locaux.</p>
-    
-            Paramètre	IA Cloud (Legacy)	SLM Local (Edge AI)
-            Latence	Haute et variable (>2s)	
-            Ultra-faible (< 100ms) 
-    
-            Connectivité	Dépendance totale à la 5G/  4G	
-            Opérationnel 100% hors ligne 
-    
-            Confidentialité	Données envoyées au serveur	
-            Traitement local souverain 
-    
-            Coût Opérationnel	Élevé (Frais d'API / Token)	
-            Faible (Matériel amorti) 
-    
-            Spécialisation	Généraliste	
-            Haute (Domaine automobile) 
-        </section>
+    <div class="drive-gap"></div>
 
-        <section>
-            <ul>
-                <li><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
-                <li><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
-                <li><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">Edge AI in Automotive Market Sizing</a></li>
-            </ul>
-        </section>
-    </main>
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">02 - ARCHITECTURE</span>
+        <h2>Transition des Architectures Cloud vers les SLM Locaux</h2>
+        <p>La transition vers les SLM locaux est dictée par l'impératif de transformer l'IA "impressionnante" des centres de données en IA "utilisable" dans le monde réel. Les modèles massifs basés sur le cloud souffrent de latences imprévisibles, de risques de conformité des données (RGPD/HIPAA) et de coûts d'API prohibitifs pour une flotte de millions de véhicules. L'IA embarquée permet désormais une exécution hors ligne totale, garantissant que des fonctions critiques comme l'assistance vocale ou le diagnostic en temps réel restent opérationnelles même dans des zones blanches. Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives, s'inscrivant dans une démarche de "GreenOps" automobile où l'efficacité logicielle devient une mesure de performance au même titre que la vitesse. <a href="#src-1" class="source-ref">[1]</a></p>
+        <ol class="sources-container">
+          <li id="src-1"><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[1] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">03 - PERFORMANCE</span>
+        <h2>Détails Techniques de la Transition</h2>
+        <p>L'analyse des contraintes opérationnelles montre que les modèles de langage de 3 à 7 milliards de paramètres (3B-7B) constituent le point d'équilibre optimal pour l'automobile. Ces modèles, bien que plus petits que leurs homologues de 175 milliards de paramètres, peuvent être optimisés pour surpasser les modèles généralistes sur des tâches spécialisées grâce au réglage fin (fine-tuning) et à la spécialisation par domaine. Par exemple, un modèle "Legal SLM" ou "Automotive SLM" peut atteindre une précision supérieure à GPT-4 pour des cas d'usage spécifiques tout en consommant une fraction de la puissance de calcul.</p>
+        <p>Dans un contexte de conduite, la latence est le paramètre le plus critique. Un modèle cloud subit les délais de transmission réseau, ce qui rend les interactions vocales hachées et les décisions de sécurité impossibles à grande vitesse. En déplaçant l'inférence sur le matériel in-car, les constructeurs (OEM) atteignent une latence quasi nulle, essentielle pour les agents cognitifs qui doivent interpréter l'intention du conducteur en millisecondes. De plus, la confidentialité est "intégrée par conception" (built-in) : les données vocales et les flux vidéo des caméras d'habitacle ne quittent jamais le véhicule, éliminant les risques de fuites de données et facilitant la conformité réglementaire mondiale. <a href="#src-3" class="source-ref">[3]</a></p>
+        <p>La transition architecturale s'accompagne également d'un changement de modèle économique. Le passage du modèle SaaS (Software as a Service) avec des frais récurrents à une infrastructure Edge AI permet aux OEM de maîtriser leurs coûts opérationnels sur le cycle de vie du véhicule, tout en offrant des mises à jour logicielles transparentes (OTA) pour améliorer les modèles locaux.</p>
+        <ol class="sources-container">
+          <li id="src-2"><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">[2] Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
+          <li id="src-3"><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[3] Edge AI in Automotive Market Sizing</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">04 - ACTEURS</span>
+        <h2>NVIDIA, Qualcomm & MediaTek</h2>
+        <p>Les enseignements du CES 2025 démontrent que l'avenir de la mobilité se joue désormais à la périphérie du réseau. NVIDIA Drive Thor, Qualcomm Snapdragon Ride et MediaTek Dimensity Auto redéfinissent le cockpit numérique.</p>
+        <p>Ces plateformes embarquent des NPU dédiés capables d'exécuter des modèles multimodaux (vision + langage) en temps réel, sans aucune connexion réseau requise.</p>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">05 - GREENOPS</span>
+        <h2>Efficacité Énergétique & Durabilité</h2>
+        <p>Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives. L'efficacité logicielle devient une mesure de performance au même titre que la vitesse ou l'autonomie.</p>
+        <p>La transition s'accompagne d'un nouveau modèle économique : du SaaS à frais récurrents vers une infrastructure Edge AI amortie sur le cycle de vie du véhicule, avec des mises à jour OTA transparentes.</p>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+    <div style="height:100vh;pointer-events:none;"></div>
+  </div>
+  
+  <div id="hint">↓ Scroll pour découvrir ↓</div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module" src="js/index.js"></script>
 </body>
 </html>

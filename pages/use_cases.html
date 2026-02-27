@@ -1,116 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cas d'Usage & Marché</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <script src="../js/cursor.js" defer></script>
+
 </head>
 <body>
-    <header>
-        <h1>L'Ère de l'AI-Defined Vehicle (AIDV)</h1>
-        <nav>
-            <a href="../index.html" class="active">Accueil & Contexte</a>
-            <a href="models.html">Modèles & Hardware</a>
-            <a href="use_cases.html">Cas d'Usage & Marché</a>
-            <a href="future.html">Vision 2030</a>
-            <a href="methodology.html">Méthodologie</a>
-        </nav>
-    </header>
+  <canvas id="c"></canvas>
 
-    <main>
+  <header>
+    <nav>
+      <a href="../index.html">Accueil & Contexte</a>
+      <a href="models.html">Modèles & Hardware</a>
+      <a href="use_cases.html" class="active">Cas d'Usage & Marché</a>
+      <a href="future.html">Vision 2030</a>
+      <a href="methodology.html">Méthodologie</a>
+    </nav>
+  </header>
 
-        <section>
-            <h1>Cas d'Usage de l'IA Embarquée : HMI, ADAS et Diagnostic</h1>
-            <p>L'IA embarquée transforme l'interaction véhicule-passager et les capacités de sécurité. L'Interface Homme-Machine (HMI) devient conversationnelle et proactive, capable d'empathie grâce aux SLM de nouvelle génération (Mercedes MBUX, Bosch AI Cockpit). Dans le domaine de l'ADAS (Advanced Driver Assistance Systems), le passage à la "Physical AI" permet aux véhicules de raisonner sur des situations complexes plutôt que de suivre des règles rigides. Enfin, la maintenance prédictive et les interactions V2X (Vehicle-to-Everything) bénéficient de l'IA locale pour traiter des téraoctets de données capteurs et fournir des diagnostics instantanés ou des résumés de trafic intelligents. <a href="#src-1" class="source-ref">[1]</a></p>
-        </section>
-    
-        <section>
-            <h2>Analyse des Applications Critiques</h2>
-    
-            <h3>HMI Cognitive et Assistants Vocaux</h3>
-            <p>L'assistant virtuel MBUX de Mercedes-Benz, fonctionnant sur le nouveau système d'exploitation MB.OS, utilise l'IA générative pour offrir des interactions naturelles avec quatre émotions différentes (neutre, amical, personnel, proactif) <a href="#src-2" class="source-ref">[2]</a>. Contrairement aux systèmes de commande simples, ces assistants conservent le contexte conversationnel à court terme, permettant des dialogues fluides. L'IA peut désormais "apprendre" les habitudes du conducteur : si le système remarque que l'utilisateur passe souvent en mode navigation à une intersection spécifique, il proposera proactivement l'affichage du guidage sur l'affichage tête haute (HUD).</p>
-    
-            <h3>ADAS Raisonné et Physical AI</h3>
-            <p>Le saut qualitatif de l'ADAS réside dans le passage de la perception pure au raisonnement. NVIDIA Alpamayo 1 permet aux véhicules de gérer le "long tail" (scénarios rares et complexes) en utilisant le raisonnement "Chain-of-Thought" <a href="#src-3" class="source-ref">[3]</a>. Par exemple, face à une situation de circulation inhabituelle, l'IA verbalise sa logique : "Je ralentis car le véhicule devant semble hésitant et un piéton s'approche de la chaussée". Cette transparence renforce la confiance de l'utilisateur et facilite la validation réglementaire pour le Niveau 4 d'autonomie.</p>
-    
-            <h3>Maintenance Prédictive et Diagnostic Intelligent</h3>
-            <p>Les SLM sont idéaux pour décoder en temps réel les données provenant du bus CAN ou des calculateurs. En cas d'alerte, l'agent IA peut consulter instantanément le manuel technique du véhicule (via RAG) pour fournir une explication claire au conducteur ou guider un technicien à travers les étapes de réparation. Des constructeurs comme Hyundai utilisent déjà des supercalculateurs (AI Factory) pour valider ces modèles de maintenance avant leur déploiement sur les véhicules de série.</p>
-    
-            <h3>V2X et Communication Intelligente</h3>
-            <p>Dans le cadre du V2X, l'IA locale peut résumer des flux massifs de messages provenant des infrastructures routières ou d'autres véhicules pour ne présenter au conducteur que les informations pertinentes. L'apprentissage fédéré (Federated Learning) permet aux véhicules d'une flotte de s'entraîner mutuellement sur des anomalies routières détectées sans jamais échanger de données privées, créant un système d'intelligence collective distribuée. <a href="#src-4" class="source-ref">[4]</a></p>
-    
-            Domaine	Application IA	Impact sur l'Expérience / Sécurité
-            HMI	Assistant empathique zoné	
-            Interaction naturelle, réduction de la distraction 
-    
-            ADAS	Raisonnement Physical AI	
-            Sécurité accrue dans les cas limites 
-    
-            Diagnostic	RAG sur manuels techniques	
-            Réparation facilitée, réduction des immobilisations 
-    
-            V2X	Résumé de trafic distribué	
-            Optimisation de trajet en temps réel 
-    
-            Production	Digital Twins (Omniverse)	
-            Usines auto-optimisées, validation virtuelle 
-        </section>
-    
-    
-        <section>
-            <h1>Les Visionnaires de l'IA Embarquée</h1>
-            <p>Chaque constructeur adopte une approche distincte pour intégrer l'IA générative, oscillant entre partenariats technologiques et développement propriétaire.</p>
-        </section>
-    
-        <section>
-            <h3>Mercedes-Benz : L'Unification par MB.OS</h3>
-            <p>Mercedes-Benz a fait de son système d'exploitation maison, MB.OS, le cœur de sa stratégie futuriste. Lancé avec la nouvelle gamme CLA, MB.OS intègre des redondances physiques pour le calcul, la direction et l'alimentation, créant une base "fail-safe" indispensable pour l'autonomie de niveau 4. Mercedes collabore étroitement avec NVIDIA pour le matériel (DRIVE Thor) et avec Google pour l'IA générative (Gemini sur Vertex AI), créant un assistant virtuel capable d'une personnalisation extrême. L'ambition de Mercedes est de transformer la Classe S en une plateforme de robotaxi de luxe en partenariat avec Uber, utilisant les modèles Alpamayo pour un raisonnement de conduite de type humain. </p>
-        </section>
-    
-        <section>
-            <h3>BMW : La "Neue Klasse" et l'Expérience Utilisateur</h3>
-            <p>BMW mise sur sa "Neue Klasse" pour redéfinir l'interface homme-machine. Le modèle iX3, dont la production débute en 2026, utilise une architecture 800V et une batterie de 112,2 kWh offrant jusqu'à 650 km d'autonomie. Au-delà des specs électriques, BMW introduit le système "Panoramic iDrive", qui projette des informations sur toute la largeur du pare-brise via BMW OS X. BMW privilégie une intégration poussée des services cloud via 5G tout en renforçant les capacités locales pour les fonctions "Highway Assist", permettant une conduite semi-autonome fluide et sécurisée. <a href="#src-5" class="source-ref">[5]</a></p>
-        </section>
-    
-        <section>
-            Modèle Phare	Puissance / Batterie	Architecture Numérique	Partenaire IA Clé
-            Mercedes CLA (2025)	Variable (EV/Hybride)	MB.OS / MBUX Virtual Assistant	Google Cloud / NVIDIA
-            BMW iX3 (2026)	463 hp / 112.2 kWh	BMW OS X / Panoramic iDrive	Cloud-native / Local Edge
-            Tesla Model Y (AI4)	~384 hp / 75-82 kWh	FSD v12+ / Custom AI stack	Propriétaire (In-house)
-            Leapmotor D19	Central Computing	Snapdragon Digital Chassis Elite	Qualcomm
+  <div id="scroll-space">
+    <div style="height:100vh;pointer-events:none;"></div>
 
-            <a href="#src-6" class="source-ref">[6]</a>
-            <a href="#src-7" class="source-ref">[7]</a>
-            <a href="#src-8" class="source-ref">[8]</a>
-        </section>
-    
-        <section>
-            <h3>Waymo et WeRide : Le Duel des Robotaxis</h3>
-            <p>Dans le secteur des services de transport autonome (TaaS), Waymo (Alphabet) conserve une avance opérationnelle avec 150 000 trajets par semaine. Sa technologie repose sur une fusion de capteurs riche (LiDAR, radars, caméras) et un Edge Computing massif capable de traiter des téraoctets de données par heure sans latence de transmission. Waymo prévoit une expansion à Londres en septembre 2026, défiant les layouts urbains complexes de la capitale britannique <a href="#src-9" class="source-ref">[9]</a>. Son rival chinois, WeRide, adopte une approche plus axée sur l'IA pour réduire les coûts. Grâce à son simulateur "Genesis", WeRide a réduit ses dépenses d'entraînement de 75 %. En 2026, WeRide vise une flotte mondiale de 2 000 à 3 000 véhicules, s'appuyant sur des partenariats avec Uber pour l'agrégation de flottes et sur une technologie d'IA capable de s'adapter rapidement à de nouveaux marchés comme le Moyen-Orient <a href="#src-10" class="source-ref">[10]</a>.</p>
-        </section>
+    <div class="drive-gap"></div>
 
-        <section>
-            <ul>
-                <li><a id="src-1" href="https://www.qualcomm.com/news/onq/2025/01/ai-on-the-road-why-ai-powered-cars-are-the-future" target="_blank">AI on the Road: Why AI-Powered Cars Are the Future</a></li> 
-                <li><a id="src-2" href="https://mercedes-benz-media.co.uk/releases/1568" target="_blank">Mercedes-Benz Media Release</a></li>
-                <li><a id="src-3" href="https://developer.nvidia.com/blog/building-autonomous-vehicles-that-reason-with-nvidia-alpamayo/" target="_blank">Building Autonomous Vehicles That Reason with NVIDIA Alpamayo</a></li>
-                <li><a id="src-4" href="https://www.researchgate.net/publication/394774854_Beyond_V2X_A_Review_of_Large_Language_Models_in_In-Vehicle_Autonomous_Driving_Systems" target="_blank">Beyond V2X: Large Language Models in In-Vehicle Autonomous Driving Systems</a></li>
-                <li><a id="src-5" href="https://www.bmw.fr/fr/plus-de-bmw/neue-klasse.html">BMW "Neue Klasse"</a></li>
-                <li><a id="src-6" href="https://www.qualcomm.com/automotive/solutions/cockpit" target="_blank">Qualcomm Automotive Cockpit Solutions</a></li>
-                <li><a id="src-7" href="https://www.qualcomm.com/automotive/products/elite" target="_blank">Qualcomm Elite Automotive Platform</a></li>
-                <li><a id="src-8" href="https://arxiv.org/abs/2511.00026v1" target="_blank">Gen AI in Automotive: Applications, Challenges, and Opportunities with a Case study on In-Vehicle Experience</a></li>
-                <li><a id="src-9" href="https://waymo.com/">Waymo</a></li>
-                <li><a id="src-10" href="https://www.weride.ai/">Weride</a></li>
-                <li><a id="src-11" href="https://www.mediatek.com/products/dimensity-auto/cockpit-platforms" target="_blank">MediaTek Dimensity Auto Cockpit Platforms</a></li>
-            </ul>
-        </section>
-        
-        <section id="news-container" style="margin-top: 50px; padding: 20px; background-color: #f9f9f9; border-top: 2px solid #333;">
-            <h3>Actualités en temps réel :</h3>
-            <ul id="news-list">
-                <li>Chargement des articles...</li>
-            </ul>
-        </section>
-    </main>
+    <!-- 01 - INTRO -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">01 - CAS D'USAGE</span>
+        <h2>HMI, ADAS et Diagnostic</h2>
+        <p>L'IA embarquée transforme l'interaction véhicule-passager et les capacités de sécurité. L'Interface Homme-Machine (HMI) devient conversationnelle et proactive, capable d'empathie grâce aux SLM de nouvelle génération (Mercedes MBUX, Bosch AI Cockpit). Dans le domaine de l'ADAS, le passage à la "Physical AI" permet aux véhicules de raisonner sur des situations complexes plutôt que de suivre des règles rigides. Enfin, la maintenance prédictive et les interactions V2X bénéficient de l'IA locale pour traiter des téraoctets de données capteurs et fournir des diagnostics instantanés. <a href="#src-1" class="source-ref">[1]</a></p>
+        <ol class="sources-container">
+          <li id="src-1"><a href="https://www.qualcomm.com/news/onq/2025/01/ai-on-the-road-why-ai-powered-cars-are-the-future" target="_blank">[1] AI on the Road: Why AI-Powered Cars Are the Future</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 02 - HMI -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">02 - HMI</span>
+        <h2>HMI Cognitive et Assistants Vocaux</h2>
+        <p>L'assistant virtuel MBUX de Mercedes-Benz, fonctionnant sur le nouveau système d'exploitation MB.OS, utilise l'IA générative pour offrir des interactions naturelles avec quatre émotions différentes (neutre, amical, personnel, proactif). <a href="#src-2" class="source-ref">[2]</a> Contrairement aux systèmes de commande simples, ces assistants conservent le contexte conversationnel à court terme, permettant des dialogues fluides. L'IA peut désormais "apprendre" les habitudes du conducteur : si le système remarque que l'utilisateur passe souvent en mode navigation à une intersection spécifique, il proposera proactivement l'affichage du guidage sur l'affichage tête haute (HUD).</p>
+        <ol class="sources-container">
+          <li id="src-2"><a href="https://mercedes-benz-media.co.uk/releases/1568" target="_blank">[2] Mercedes-Benz Media Release</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 03 - ADAS -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">03 - ADAS</span>
+        <h2>ADAS Raisonné et Physical AI</h2>
+        <p>Le saut qualitatif de l'ADAS réside dans le passage de la perception pure au raisonnement. NVIDIA Alpamayo 1 permet aux véhicules de gérer le "long tail" (scénarios rares et complexes) en utilisant le raisonnement "Chain-of-Thought". <a href="#src-3" class="source-ref">[3]</a> Par exemple, face à une situation de circulation inhabituelle, l'IA verbalise sa logique : "Je ralentis car le véhicule devant semble hésitant et un piéton s'approche de la chaussée". Cette transparence renforce la confiance de l'utilisateur et facilite la validation réglementaire pour le Niveau 4 d'autonomie.</p>
+        <ol class="sources-container">
+          <li id="src-3"><a href="https://developer.nvidia.com/blog/building-autonomous-vehicles-that-reason-with-nvidia-alpamayo/" target="_blank">[3] Building Autonomous Vehicles That Reason with NVIDIA Alpamayo</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 04 - DIAGNOSTIC -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">04 - DIAGNOSTIC</span>
+        <h2>Maintenance Prédictive et Diagnostic Intelligent</h2>
+        <p>Les SLM sont idéaux pour décoder en temps réel les données provenant du bus CAN ou des calculateurs. En cas d'alerte, l'agent IA peut consulter instantanément le manuel technique du véhicule (via RAG) pour fournir une explication claire au conducteur ou guider un technicien à travers les étapes de réparation. Des constructeurs comme Hyundai utilisent déjà des supercalculateurs (AI Factory) pour valider ces modèles de maintenance avant leur déploiement sur les véhicules de série.</p>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 05 - V2X -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">05 - V2X</span>
+        <h2>V2X et Communication Intelligente</h2>
+        <p>Dans le cadre du V2X, l'IA locale peut résumer des flux massifs de messages provenant des infrastructures routières ou d'autres véhicules pour ne présenter au conducteur que les informations pertinentes. L'apprentissage fédéré (Federated Learning) permet aux véhicules d'une flotte de s'entraîner mutuellement sur des anomalies routières détectées sans jamais échanger de données privées, créant un système d'intelligence collective distribuée. <a href="#src-4" class="source-ref">[4]</a></p>
+        <ol class="sources-container">
+          <li id="src-4"><a href="https://www.researchgate.net/publication/394774854_Beyond_V2X_A_Review_of_Large_Language_Models_in_In-Vehicle_Autonomous_Driving_Systems" target="_blank">[4] Beyond V2X: Large Language Models in In-Vehicle Autonomous Driving Systems</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 06 - VISIONNAIRES -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">06 - VISIONNAIRES</span>
+        <h2>Les Visionnaires de l'IA Embarquée</h2>
+        <p>Chaque constructeur adopte une approche distincte pour intégrer l'IA générative, oscillant entre partenariats technologiques et développement propriétaire.</p>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 07 - MERCEDES -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">07 - MERCEDES-BENZ</span>
+        <h2>Mercedes-Benz : L'Unification par MB.OS</h2>
+        <p>Mercedes-Benz a fait de son système d'exploitation maison, MB.OS, le cœur de sa stratégie futuriste. Lancé avec la nouvelle gamme CLA, MB.OS intègre des redondances physiques pour le calcul, la direction et l'alimentation, créant une base "fail-safe" indispensable pour l'autonomie de niveau 4. Mercedes collabore étroitement avec NVIDIA pour le matériel (DRIVE Thor) et avec Google pour l'IA générative (Gemini sur Vertex AI), créant un assistant virtuel capable d'une personnalisation extrême. L'ambition de Mercedes est de transformer la Classe S en une plateforme de robotaxi de luxe en partenariat avec Uber, utilisant les modèles Alpamayo pour un raisonnement de conduite de type humain.</p>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 08 - BMW -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">08 - BMW</span>
+        <h2>BMW : La "Neue Klasse" et l'Expérience Utilisateur</h2>
+        <p>BMW mise sur sa "Neue Klasse" pour redéfinir l'interface homme-machine. Le modèle iX3, dont la production débute en 2026, utilise une architecture 800V et une batterie de 112,2 kWh offrant jusqu'à 650 km d'autonomie. Au-delà des specs électriques, BMW introduit le système "Panoramic iDrive", qui projette des informations sur toute la largeur du pare-brise via BMW OS X. BMW privilégie une intégration poussée des services cloud via 5G tout en renforçant les capacités locales pour les fonctions "Highway Assist". <a href="#src-5" class="source-ref">[5]</a></p>
+        <ol class="sources-container">
+          <li id="src-5"><a href="https://www.bmw.fr/fr/plus-de-bmw/neue-klasse.html" target="_blank">[5] BMW "Neue Klasse"</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 09 - OEM COMPARISON -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">09 - COMPARATIF OEM</span>
+        <h2>Comparatif des Plateformes Constructeurs</h2>
+        <p>Mercedes CLA (2025) s'appuie sur MB.OS avec Google Cloud et NVIDIA comme partenaires IA. BMW iX3 (2026) combine BMW OS X avec une approche cloud-native et Edge locale. Tesla Model Y continue sur son stack IA propriétaire FSD v12+. Leapmotor D19 adopte le Snapdragon Digital Chassis Elite de Qualcomm.</p>
+        <ol class="sources-container">
+          <li id="src-6"><a href="https://www.qualcomm.com/automotive/solutions/cockpit" target="_blank">[6] Qualcomm Automotive Cockpit Solutions</a></li>
+          <li id="src-7"><a href="https://www.qualcomm.com/automotive/products/elite" target="_blank">[7] Qualcomm Elite Automotive Platform</a></li>
+          <li id="src-8"><a href="https://arxiv.org/abs/2511.00026v1" target="_blank">[8] Gen AI in Automotive: Applications, Challenges, and Opportunities</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <!-- 10 - ROBOTAXIS -->
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">10 - ROBOTAXIS</span>
+        <h2>Waymo et WeRide : Le Duel des Robotaxis</h2>
+        <p>Dans le secteur des services de transport autonome (TaaS), Waymo (Alphabet) conserve une avance opérationnelle avec 150 000 trajets par semaine. Sa technologie repose sur une fusion de capteurs riche (LiDAR, radars, caméras) et un Edge Computing massif capable de traiter des téraoctets de données par heure sans latence de transmission. Waymo prévoit une expansion à Londres en septembre 2026, défiant les layouts urbains complexes de la capitale britannique. <a href="#src-9" class="source-ref">[9]</a></p>
+        <p>Son rival chinois, WeRide, adopte une approche plus axée sur l'IA pour réduire les coûts. Grâce à son simulateur "Genesis", WeRide a réduit ses dépenses d'entraînement de 75 %. En 2026, WeRide vise une flotte mondiale de 2 000 à 3 000 véhicules, s'appuyant sur des partenariats avec Uber pour l'agrégation de flottes et sur une technologie d'IA capable de s'adapter rapidement à de nouveaux marchés comme le Moyen-Orient. <a href="#src-10" class="source-ref">[10]</a></p>
+        <ol class="sources-container">
+          <li id="src-9"><a href="https://waymo.com/" target="_blank">[9] Waymo</a></li>
+          <li id="src-10"><a href="https://www.weride.ai/" target="_blank">[10] WeRide</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+    <div style="height:100vh;pointer-events:none;"></div>
+  </div>
+
+  <div id="hint">↓ Scroll pour découvrir ↓</div>
+
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <script type="module" src="../js/use_cases.js"></script>
 </body>
 </html>
