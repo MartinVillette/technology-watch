@@ -81,9 +81,11 @@ nav a:hover {
   mask-composite: intersect;
 }
 
-.drive-gap { height: 100vh; pointer-events: none; }
+.drive-gap { height: 80vh; pointer-events: none; }
 .card {
   width:800px;
+  min-width: 0;           /* ── prevents flex child from overflowing ── */
+  overflow: hidden;
 }
 
 .card h2 {
@@ -121,6 +123,7 @@ nav a:hover {
   width: 100%;
   text-align: center;
   margin-top:40px;
+  padding-bottom: 4px;
 }
 #google-sheet-link {
   color:black;
@@ -129,9 +132,33 @@ nav a:hover {
   border-radius: 5px;
   text-align: center;
   text-decoration: none;
+  display: inline-block;       
+  max-width: 90%;             
+  word-break: break-word;
   margin: 0 auto;
   transition: .3s;
 }
 #google-sheet-link:hover {
   background: rgba(255,255,255,1);
+}
+#news-list{
+  display: flex;
+  flex-direction: column;
+  gap:3px;
+}
+#news-container li {
+  color: rgba(255,255,255,0.5);
+  font-size:.7rem;
+  font-style: italic;
+}
+#news-container a {
+  color: rgba(255,255,255,0.7);
+  text-decoration:none;
+  transition: 0.3s;
+  padding:5px;
+  font-size: 1rem;
+}
+
+#news-container a:hover {
+  color: rgba(255,255,255,1);
 }

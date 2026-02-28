@@ -39,7 +39,7 @@
         <h2>Transition des Architectures Cloud vers les SLM Locaux</h2>
         <p>La transition vers les SLM locaux est dictée par l'impératif de transformer l'IA "impressionnante" des centres de données en IA "utilisable" dans le monde réel. Les modèles massifs basés sur le cloud souffrent de latences imprévisibles, de risques de conformité des données (RGPD/HIPAA) et de coûts d'API prohibitifs pour une flotte de millions de véhicules. L'IA embarquée permet désormais une exécution hors ligne totale, garantissant que des fonctions critiques comme l'assistance vocale ou le diagnostic en temps réel restent opérationnelles même dans des zones blanches. Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives, s'inscrivant dans une démarche de "GreenOps" automobile où l'efficacité logicielle devient une mesure de performance au même titre que la vitesse. <a href="#src-1" class="source-ref">[1]</a></p>
         <ol class="sources-container">
-          <li id="src-1"><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[1] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
+          <li><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[1] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
         </ol>
       </div>
     </section>
@@ -54,8 +54,8 @@
         <p>Dans un contexte de conduite, la latence est le paramètre le plus critique. Un modèle cloud subit les délais de transmission réseau, ce qui rend les interactions vocales hachées et les décisions de sécurité impossibles à grande vitesse. En déplaçant l'inférence sur le matériel in-car, les constructeurs (OEM) atteignent une latence quasi nulle, essentielle pour les agents cognitifs qui doivent interpréter l'intention du conducteur en millisecondes. De plus, la confidentialité est "intégrée par conception" (built-in) : les données vocales et les flux vidéo des caméras d'habitacle ne quittent jamais le véhicule, éliminant les risques de fuites de données et facilitant la conformité réglementaire mondiale. <a href="#src-3" class="source-ref">[3]</a></p>
         <p>La transition architecturale s'accompagne également d'un changement de modèle économique. Le passage du modèle SaaS (Software as a Service) avec des frais récurrents à une infrastructure Edge AI permet aux OEM de maîtriser leurs coûts opérationnels sur le cycle de vie du véhicule, tout en offrant des mises à jour logicielles transparentes (OTA) pour améliorer les modèles locaux.</p>
         <ol class="sources-container">
-          <li id="src-2"><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">[2] Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
-          <li id="src-3"><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[3] Edge AI in Automotive Market Sizing</a></li>
+          <li><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">[2] Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
+          <li><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[3] Edge AI in Automotive Market Sizing</a></li>
         </ol>
       </div>
     </section>
@@ -83,6 +83,29 @@
     </section>
 
     <div class="drive-gap"></div>
+
+    <section class="drive-section">
+      <div class="card">
+        <h2>Sources et Références</h2>
+        <ul class="sources-container">
+          <li id="src-1"><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[1] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
+          <li id="src-2"><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">[2] Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
+          <li id="src-3"><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[3] Edge AI in Automotive Market Sizing</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <section class="drive-section" id="news-container">
+      <div class="card">
+        <span class="tag">Flux Brut</span>
+        <h2>Dernières actualités techniques</h2>
+        <ul id="news-list"><li id="news-loading-placeholder">Chargement...</li></ul>
+      </div>
+    </section>
+
+    
     <div style="height:100vh;pointer-events:none;"></div>
   </div>
   
@@ -95,6 +118,52 @@
         "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
       }
     }
+  </script>
+
+  <script>
+    // Sur cette page méthodologie, on peut choisir d'afficher TOUS les sujets ou un sujet 'tech'
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwavboJq92GEn1vyeLpHYveqHZufqgMgRslfZWgVAhCO5hYUehvGEEOsYea0-ySyNi4Ig/exec";
+    const PAGE_TOPICS = ["contexte"];
+
+    async function loadNews() {
+        const listContainer = document.getElementById('news-list');
+
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL);
+            const data = await response.json();
+
+            const filteredData = data.filter(item => PAGE_TOPICS.includes(item.topic));
+
+            listContainer.innerHTML = '';
+
+            if (filteredData.length === 0) {
+                listContainer.innerHTML = '<li>Aucune actualité récente pour ce sujet.</li>';
+                return;
+            }
+
+            filteredData.slice(0, 10).forEach(article => {
+                const li = document.createElement('li');
+                li.style.marginBottom = "10px";
+                
+                const dateObj = new Date(article.date);
+                const dateStr = dateObj.toLocaleDateString('fr-FR');
+
+                li.innerHTML = `
+                    <span style="font-size: 0.9em; color: #666;">${dateStr}</span> - 
+                    <a href="${article.link}" target="_blank">
+                        ${article.title}
+                    </a>
+                `;
+                listContainer.appendChild(li);
+            });
+
+        } catch (error) {
+            console.error("Erreur :", error);
+            listContainer.innerHTML = '<li style="color: red;">Impossible de charger les actualités pour le moment.</li>';
+        }
+    }
+
+    window.onload = loadNews;
   </script>
 
   <script type="module" src="js/index.js"></script>

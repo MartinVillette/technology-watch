@@ -17,6 +17,8 @@
       overflow: hidden;
       border: 1px solid #313244;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      max-width: 100%;
+      min-width: 0;
     }
     .code-block-header {
       background-color: #313244;
@@ -36,13 +38,18 @@
       border-radius: 50%;
       background-color: #f38ba8;
       box-shadow: 20px 0 0 #fab387, 40px 0 0 #a6e3a1;
+      flex-shrink: 0;
     }
     .code-block-wrapper pre {
       margin: 0;
       padding: 1.2rem 1.5rem;
       overflow-x: auto;
+      overflow-y: visible;
+      max-width: 100%;
       line-height: 1.6;
       color: #cdd6f4;
+      white-space: pre;
+      word-break: normal;
     }
     .c-keyword  { color: #cba6f7; }
     .c-string   { color: #a6e3a1; }
@@ -51,6 +58,12 @@
     .c-number   { color: #fab387; }
     .c-operator { color: #89dceb; }
     .c-template { color: #f9e2af; }
+
+    @media (max-width: 600px) {
+      .code-block-wrapper pre { font-size: 0.72rem; padding: 1rem; }
+      .code-block-header       { font-size: 0.7rem;  gap: 16px;    }
+      .code-block-header::before { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -170,12 +183,20 @@
 
         <div class="code-block-wrapper">
           <div class="code-block-header">Apps Script – Google Sheets Automation</div>
-          <pre><code><span class="c-comment">// 1. CONFIGURATION</span>
+          <pre><code><span class="c-comment">// ==========================================</span>
+<span class="c-comment">// 1. CONFIGURATION</span>
+<span class="c-comment">// ==========================================</span>
 <span class="c-keyword">const</span> GROQ_API_KEY <span class="c-operator">=</span> <span class="c-string">"gsk_xxx"</span>;
 <span class="c-keyword">const</span> GROQ_MODEL   <span class="c-operator">=</span> <span class="c-string">"llama-3.1-8b-instant"</span>;
 
 <span class="c-keyword">const</span> RSS_URLS <span class="c-operator">=</span> [
-  <span class="c-string">"https://www.google.fr/alerts/feeds/xxx/alert1"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/13514125029556601403"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/537131559348505229"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/9110558325910702791"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/4122885177354724118"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/103813396756190836"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/9945621874752529365"</span>,
+  <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/6848064440929761067"</span>,
   <span class="c-string">"https://www.reddit.com/r/LocalLLaMA/top/.rss?t=week"</span>,
   <span class="c-string">"https://blogs.nvidia.com/blog/category/auto/feed/"</span>,
   <span class="c-string">"http://export.arxiv.org/api/query?search_query=all:quantization+AND+all:LLM&amp;start=0&amp;max_results=10&amp;sortBy=submittedDate&amp;sortOrder=descending"</span>,
@@ -185,16 +206,21 @@
   <span class="c-string">"https://techcrunch.com/category/artificial-intelligence/feed/"</span>,
 ];
 
-<span class="c-keyword">function</span> <span class="c-function">fetchAndStoreNewsGroq</span>() {
+<span class="c-comment">// ==========================================</span>
+<span class="c-comment">// 2. FONCTION PRINCIPALE</span>
+<span class="c-comment">// ==========================================</span>
+<span class="c-keyword">function</span> <span class="c-function">fetchAndStoreNews</span>() {
   <span class="c-keyword">const</span> sheet <span class="c-operator">=</span> SpreadsheetApp.getActiveSpreadsheet().getSheetByName(<span class="c-string">'Data'</span>);
   <span class="c-keyword">if</span> (!sheet) { SpreadsheetApp.getActiveSpreadsheet().insertSheet(<span class="c-string">'Data'</span>); }
 
   <span class="c-keyword">const</span> lastRow <span class="c-operator">=</span> sheet.getLastRow();
-  <span class="c-comment">// Mémoire des liens existants pour éviter les doublons</span>
   <span class="c-keyword">const</span> existingLinks <span class="c-operator">=</span> lastRow <span class="c-operator">&gt;</span> <span class="c-number">1</span>
     <span class="c-operator">?</span> sheet.getRange(<span class="c-number">2</span>, <span class="c-number">3</span>, lastRow <span class="c-operator">-</span> <span class="c-number">1</span>).getValues().flat()
     : [];
 
+  <span class="c-keyword">let</span> articlesToProcess <span class="c-operator">=</span> [];
+
+  <span class="c-comment">// --- ÉTAPE 1 : RÉCUPÉRATION DES FLUX ---</span>
   RSS_URLS.forEach(url <span class="c-operator">=&gt;</span> {
     <span class="c-keyword">try</span> {
       <span class="c-keyword">const</span> response <span class="c-operator">=</span> UrlFetchApp.fetch(url, {muteHttpExceptions: <span class="c-keyword">true</span>});
@@ -202,60 +228,117 @@
 
       <span class="c-keyword">const</span> root <span class="c-operator">=</span> XmlService.parse(response.getContentText()).getRootElement();
       <span class="c-keyword">const</span> atom <span class="c-operator">=</span> XmlService.getNamespace(<span class="c-string">'http://www.w3.org/2005/Atom'</span>);
+
       <span class="c-keyword">let</span> entries <span class="c-operator">=</span> root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>
         <span class="c-operator">?</span> root.getChildren(<span class="c-string">'entry'</span>, atom)
-        : (root.getChild(<span class="c-string">'channel'</span>) <span class="c-operator">||</span> root).getChildren(<span class="c-string">'item'</span>);
+        : (root.getChild(<span class="c-string">'channel'</span>) <span class="c-operator">?</span> root.getChild(<span class="c-string">'channel'</span>).getChildren(<span class="c-string">'item'</span>) : []);
 
-      <span class="c-comment">// Limite : 5 pour Hugging Face, 10 pour les autres</span>
-      entries <span class="c-operator">=</span> entries.slice(<span class="c-number">0</span>, url.includes(<span class="c-string">"huggingface"</span>) <span class="c-operator">?</span> <span class="c-number">5</span> : <span class="c-number">10</span>);
+      <span class="c-keyword">const</span> limit <span class="c-operator">=</span> (url.includes(<span class="c-string">"huggingface"</span>) <span class="c-operator">||</span> url.includes(<span class="c-string">"arxiv"</span>)) <span class="c-operator">?</span> <span class="c-number">5</span> : <span class="c-number">10</span>;
+      entries <span class="c-operator">=</span> entries.slice(<span class="c-number">0</span>, limit);
 
       entries.forEach(entry <span class="c-operator">=&gt;</span> {
-        <span class="c-keyword">let</span> link, title, published;
+        <span class="c-keyword">let</span> link <span class="c-operator">=</span> <span class="c-string">""</span>, title <span class="c-operator">=</span> <span class="c-string">""</span>, published <span class="c-operator">=</span> <span class="c-string">""</span>;
 
-        <span class="c-keyword">if</span> (root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>) { <span class="c-comment">// ATOM</span>
-          link      <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>, atom).getAttribute(<span class="c-string">'href'</span>).getValue();
+        <span class="c-keyword">if</span> (root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>) {
+          <span class="c-keyword">const</span> linkElem <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>, atom);
+          link      <span class="c-operator">=</span> linkElem <span class="c-operator">?</span> linkElem.getAttribute(<span class="c-string">'href'</span>).getValue() : <span class="c-string">""</span>;
           title     <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>, atom).getText();
           published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'published'</span>, atom)<span class="c-operator">?.</span>getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
-        } <span class="c-keyword">else</span> { <span class="c-comment">// RSS</span>
+        } <span class="c-keyword">else</span> {
           link      <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>).getText();
           title     <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>).getText();
           published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'pubDate'</span>)<span class="c-operator">?.</span>getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
         }
 
-        title <span class="c-operator">=</span> title.replace(<span class="c-operator">/</span>&lt;[^&gt;]+&gt;<span class="c-operator">/g</span>, <span class="c-string">''</span>);
-
-        <span class="c-comment">// Barrière n°1 : Dédoublonnage</span>
-        <span class="c-keyword">if</span> (existingLinks.includes(link)) <span class="c-keyword">return</span>;
-
-        <span class="c-keyword">const</span> topic <span class="c-operator">=</span> <span class="c-function">classifyWithGroqSafe</span>(title);
-
-        <span class="c-comment">// Barrière n°2 : Filtrage IA</span>
-        <span class="c-keyword">if</span> (topic <span class="c-operator">&amp;&amp;</span> topic <span class="c-operator">!==</span> <span class="c-string">'autre'</span>) {
-          sheet.appendRow([published, title, link, topic]);
+        title <span class="c-operator">=</span> title.replace(<span class="c-operator">/</span>&lt;[^&gt;]+&gt;<span class="c-operator">/g</span>, <span class="c-string">''</span>).trim();
+        <span class="c-keyword">if</span> (!existingLinks.includes(link) <span class="c-operator">&amp;&amp;</span> title.length <span class="c-operator">&gt;</span> <span class="c-number">5</span>) {
+          articlesToProcess.push({ title, link, published, category: <span class="c-keyword">null</span> });
           existingLinks.push(link);
         }
       });
     } <span class="c-keyword">catch</span> (e) {
-      console.log(<span class="c-string">"Erreur flux : "</span> <span class="c-operator">+</span> e);
+      console.log(<span class="c-string">"Erreur Flux RSS ("</span> <span class="c-operator">+</span> url <span class="c-operator">+</span> <span class="c-string">") : "</span> <span class="c-operator">+</span> e);
     }
   });
+
+  <span class="c-comment">// --- ÉTAPE 2 : FILTRAGE LOCAL (REGEX) ---</span>
+  <span class="c-keyword">let</span> articlesForGroq <span class="c-operator">=</span> [];
+
+  articlesToProcess.forEach(article <span class="c-operator">=&gt;</span> {
+    <span class="c-keyword">const</span> localCat <span class="c-operator">=</span> <span class="c-function">classifyLocalRegex</span>(article.title);
+    <span class="c-keyword">if</span> (localCat) {
+      article.category <span class="c-operator">=</span> localCat;
+      <span class="c-keyword">if</span> (localCat <span class="c-operator">!==</span> <span class="c-string">'autre'</span>) {
+        sheet.appendRow([article.published, article.title, article.link, article.category]);
+        console.log(<span class="c-template">`[LOCAL] Ajouté [${article.category}] : ${article.title}`</span>);
+      }
+    } <span class="c-keyword">else</span> {
+      articlesForGroq.push(article);
+    }
+  });
+
+  <span class="c-comment">// --- ÉTAPE 3 : BATCHING API GROQ ---</span>
+  <span class="c-keyword">if</span> (articlesForGroq.length <span class="c-operator">&gt;</span> <span class="c-number">0</span>) {
+    <span class="c-function">processInBatches</span>(articlesForGroq, sheet);
+  }
 }
 
-<span class="c-keyword">function</span> <span class="c-function">classifyWithGroqSafe</span>(titreArticle) {
+<span class="c-comment">// ==========================================</span>
+<span class="c-comment">// 3. CLASSIFICATION LOCALE (ZÉRO TOKEN)</span>
+<span class="c-comment">// ==========================================</span>
+<span class="c-keyword">function</span> <span class="c-function">classifyLocalRegex</span>(title) {
+  <span class="c-keyword">const</span> t <span class="c-operator">=</span> title.toLowerCase();
+
+  <span class="c-keyword">if</span> (<span class="c-operator">/</span>(médecine|cancer|bitcoin|crypto|nft|biology|santé)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
+  <span class="c-keyword">if</span> (<span class="c-operator">/</span>(nvidia|amd|qualcomm|snapdragon|soc|npu|gpu|tops|silicon|chip|semiconductor)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'hardware'</span>;
+  <span class="c-keyword">if</span> (<span class="c-operator">/</span>(llama|qwen|mistral|phi-3|slm|llm|quantization|7b|8b|70b|parameter|distillation|fine-tuning)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'software_models'</span>;
+  <span class="c-keyword">if</span> (<span class="c-operator">/</span>(tesla|bmw|mercedes|waymo|weride|ford|toyota|oem|robotaxi)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'manufacturers'</span>;
+
+  <span class="c-keyword">return</span> <span class="c-keyword">null</span>;
+}
+
+<span class="c-comment">// ==========================================</span>
+<span class="c-comment">// 4. TRAITEMENT PAR LOTS (GROQ)</span>
+<span class="c-comment">// ==========================================</span>
+<span class="c-keyword">function</span> <span class="c-function">processInBatches</span>(articles, sheet) {
+  <span class="c-keyword">const</span> BATCH_SIZE <span class="c-operator">=</span> <span class="c-number">10</span>;
+
+  <span class="c-keyword">for</span> (<span class="c-keyword">let</span> i <span class="c-operator">=</span> <span class="c-number">0</span>; i <span class="c-operator">&lt;</span> articles.length; i <span class="c-operator">+=</span> BATCH_SIZE) {
+    <span class="c-keyword">const</span> batch <span class="c-operator">=</span> articles.slice(i, i <span class="c-operator">+</span> BATCH_SIZE);
+    <span class="c-keyword">const</span> categories <span class="c-operator">=</span> <span class="c-function">classifyBatchWithGroq</span>(batch.map(a <span class="c-operator">=&gt;</span> a.title));
+
+    batch.forEach((article, index) <span class="c-operator">=&gt;</span> {
+      article.category <span class="c-operator">=</span> categories[index] <span class="c-operator">||</span> <span class="c-string">'autre'</span>;
+      <span class="c-keyword">if</span> (article.category <span class="c-operator">!==</span> <span class="c-string">'autre'</span>) {
+        sheet.appendRow([article.published, article.title, article.link, article.category]);
+        console.log(<span class="c-template">`[GROQ] Ajouté [${article.category}] : ${article.title}`</span>);
+      }
+    });
+
+    Utilities.sleep(<span class="c-number">3000</span>);
+  }
+}
+
+<span class="c-comment">// ==========================================</span>
+<span class="c-comment">// 5. APPEL API GROQ (OPTIMISÉ POUR BATCH)</span>
+<span class="c-comment">// ==========================================</span>
+<span class="c-keyword">function</span> <span class="c-function">classifyBatchWithGroq</span>(titlesArray) {
   <span class="c-keyword">const</span> prompt <span class="c-operator">=</span> <span class="c-template">`
-Tu es un classificateur ultra-strict pour une veille sur l'IA Embarquée et l'Automobile.
-Titre : "${titreArticle}"
+Tu es un classificateur strict spécialisé dans l'IA Embarquée, l'Automobile et la performance des modèles (SLM/LLM).
+Voici un tableau JSON de ${titlesArray.length} titres d'articles :
+${JSON.stringify(titlesArray)}
 
-ÉTAPE 1 - REJET : médecine, finance, crypto, IA cloud pure → autre
-ÉTAPE 2 - CLASSIFICATION :
-  hardware        → puces, SoC, NPU, GPU, TOPS, semi-conducteurs
-  software_models → LLM/SLM, quantization, RAG, distillation
-  use_cases       → ADAS, V2X, cockpit, assistant vocal, diagnostic
-  manufacturers   → OEM, robotaxis, BMW, Mercedes, Tesla, Waymo
-  future          → prospective, marché 2026-2030, GreenOps, régulations
-  contexte        → reste (marché global, souveraineté données)
+Pour CHAQUE titre, assigne UNE SEULE de ces catégories :
+- "hardware"        : Puces, GPU, NPU, TOPS, silicium.
+- "software_models" : Algorithmes, SLM, LLM, quantization, RAG.
+- "use_cases"       : ADAS, cockpit intelligent, infotainment dans le véhicule.
+- "manufacturers"   : Constructeurs auto, robotaxis, usines, partenariats.
+- "future"          : Prospective, régulations, horizons 2030, GreenOps.
+- "contexte"        : Marché global Edge AI ou automobile.
+- "autre"           : Hors-sujet (médecine, finance, web pur, etc.).
 
-Réponds UNIQUEMENT par le mot-clé exact en minuscules.`</span>;
+RÈGLE ABSOLUE : Réponds UNIQUEMENT par un tableau JSON valide de ${titlesArray.length} chaînes, dans le MÊME ORDRE.
+Exemple : ["software_models", "autre", "hardware"]`</span>;
 
   <span class="c-keyword">const</span> options <span class="c-operator">=</span> {
     method: <span class="c-string">"post"</span>, contentType: <span class="c-string">"application/json"</span>,
@@ -263,31 +346,37 @@ Réponds UNIQUEMENT par le mot-clé exact en minuscules.`</span>;
     payload: JSON.stringify({
       model: GROQ_MODEL,
       messages: [{ role: <span class="c-string">"user"</span>, content: prompt }],
-      temperature: <span class="c-number">0.0</span>, max_tokens: <span class="c-number">10</span>
+      temperature: <span class="c-number">0.0</span>, max_tokens: <span class="c-number">150</span>
     }),
     muteHttpExceptions: <span class="c-keyword">true</span>
   };
 
-  <span class="c-keyword">const</span> validTags <span class="c-operator">=</span> [<span class="c-string">"hardware"</span>,<span class="c-string">"software_models"</span>,<span class="c-string">"use_cases"</span>,<span class="c-string">"manufacturers"</span>,<span class="c-string">"future"</span>,<span class="c-string">"contexte"</span>];
-  <span class="c-keyword">let</span> attempt <span class="c-operator">=</span> <span class="c-number">0</span>;
+  <span class="c-keyword">for</span> (<span class="c-keyword">let</span> attempt <span class="c-operator">=</span> <span class="c-number">0</span>; attempt <span class="c-operator">&lt;</span> <span class="c-number">3</span>; attempt<span class="c-operator">++</span>) {
+    <span class="c-keyword">try</span> {
+      <span class="c-keyword">const</span> res  <span class="c-operator">=</span> UrlFetchApp.fetch(<span class="c-string">"https://api.groq.com/openai/v1/chat/completions"</span>, options);
+      <span class="c-keyword">const</span> code <span class="c-operator">=</span> res.getResponseCode();
 
-  <span class="c-keyword">while</span> (attempt <span class="c-operator">&lt;</span> <span class="c-number">3</span>) {
-    <span class="c-keyword">const</span> res  <span class="c-operator">=</span> UrlFetchApp.fetch(<span class="c-string">"https://api.groq.com/openai/v1/chat/completions"</span>, options);
-    <span class="c-keyword">const</span> code <span class="c-operator">=</span> res.getResponseCode();
-
-    <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">200</span>) {
-      <span class="c-keyword">const</span> raw <span class="c-operator">=</span> JSON.parse(res.getContentText()).choices[<span class="c-number">0</span>].message.content.trim().toLowerCase();
-      Utilities.sleep(<span class="c-number">4000</span>);
-      <span class="c-keyword">for</span> (<span class="c-keyword">const</span> tag <span class="c-keyword">of</span> validTags) { <span class="c-keyword">if</span> (raw.includes(tag)) <span class="c-keyword">return</span> tag; }
-      <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
+      <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">200</span>) {
+        <span class="c-keyword">let</span> content <span class="c-operator">=</span> JSON.parse(res.getContentText()).choices[<span class="c-number">0</span>].message.content.trim();
+        content <span class="c-operator">=</span> content.replace(<span class="c-operator">/</span>```json<span class="c-operator">/g</span>, <span class="c-string">''</span>).replace(<span class="c-operator">/</span>```<span class="c-operator">/g</span>, <span class="c-string">''</span>).trim();
+        <span class="c-keyword">const</span> parsed <span class="c-operator">=</span> JSON.parse(content);
+        <span class="c-keyword">if</span> (Array.isArray(parsed) <span class="c-operator">&amp;&amp;</span> parsed.length <span class="c-operator">===</span> titlesArray.length) <span class="c-keyword">return</span> parsed;
+      } <span class="c-keyword">else</span> <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">429</span>) {
+        console.warn(<span class="c-string">"Erreur 429 : Pause de 10s..."</span>);
+        Utilities.sleep(<span class="c-number">10000</span>);
+      }
+    } <span class="c-keyword">catch</span> (e) {
+      console.error(<span class="c-string">"Erreur API : "</span> <span class="c-operator">+</span> e);
+      Utilities.sleep(<span class="c-number">5000</span>);
     }
-    <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">429</span>) { Utilities.sleep(<span class="c-number">10000</span>); attempt++; }
-    <span class="c-keyword">else</span> <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
   }
-  <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
+
+  <span class="c-keyword">return</span> <span class="c-keyword">new</span> Array(titlesArray.length).fill(<span class="c-string">'autre'</span>);
 }
 
-<span class="c-comment">// API JSON publique pour le site web</span>
+<span class="c-comment">// ==========================================</span>
+<span class="c-comment">// 6. API POUR LE SITE WEB</span>
+<span class="c-comment">// ==========================================</span>
 <span class="c-keyword">function</span> <span class="c-function">doGet</span>(e) {
   <span class="c-keyword">const</span> sheet <span class="c-operator">=</span> SpreadsheetApp.getActiveSpreadsheet().getSheetByName(<span class="c-string">'Data'</span>);
   <span class="c-keyword">if</span> (!sheet <span class="c-operator">||</span> sheet.getLastRow() <span class="c-operator">&lt;</span> <span class="c-number">2</span>)
@@ -295,17 +384,18 @@ Réponds UNIQUEMENT par le mot-clé exact en minuscules.`</span>;
       .setMimeType(ContentService.MimeType.JSON);
 
   <span class="c-keyword">const</span> rows <span class="c-operator">=</span> sheet.getDataRange().getValues();
-  rows.shift(); <span class="c-comment">// Supprimer l'en-tête</span>
+  rows.shift();
 
   <span class="c-keyword">let</span> data <span class="c-operator">=</span> rows
     .map(row <span class="c-operator">=&gt;</span> ({ date: row[<span class="c-number">0</span>], title: row[<span class="c-number">1</span>], link: row[<span class="c-number">2</span>], topic: row[<span class="c-number">3</span>] }))
     .sort((a, b) <span class="c-operator">=&gt;</span> <span class="c-keyword">new</span> Date(b.date) <span class="c-operator">-</span> <span class="c-keyword">new</span> Date(a.date))
-    .slice(<span class="c-number">0</span>, <span class="c-number">50</span>); <span class="c-comment">// 50 articles max pour la rapidité du site</span>
+    .slice(<span class="c-number">0</span>, <span class="c-number">50</span>);
 
   <span class="c-keyword">return</span> ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
 }</code></pre>
         </div>
+
 
         <p id="google-sheet-link-container">
           <a href="https://docs.google.com/spreadsheets/d/1oCypRQoLJ1zjwaQMwPYFEr3XLmEUstojZxdJGRdwqSU/edit?gid=0#gid=0" target="_blank" id="google-sheet-link">Accéder à la base de données Google Sheets</a>
@@ -314,6 +404,14 @@ Réponds UNIQUEMENT par le mot-clé exact en minuscules.`</span>;
     </section>
 
     <div class="drive-gap"></div>
+
+    <section class="drive-section" id="news-container">
+      <div class="card">
+        <span class="tag">Flux Brut</span>
+        <h2>Dernières actualités techniques</h2>
+        <ul id="news-list"><li id="news-loading-placeholder">Chargement...</li></ul>
+      </div>
+    </section>
     <div style="height:100vh;pointer-events:none;"></div>
   </div>
 
@@ -324,5 +422,26 @@ Réponds UNIQUEMENT par le mot-clé exact en minuscules.`</span>;
   </script>
 
   <script type="module" src="../js/methodology.js"></script>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwavboJq92GEn1vyeLpHYveqHZufqgMgRslfZWgVAhCO5hYUehvGEEOsYea0-ySyNi4Ig/exec";
+    
+    async function loadNews() {
+        const listContainer = document.getElementById('news-list');
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL);
+            const data = await response.json();
+            
+            // Ici on affiche tout sans filtre de topic, ou juste les sujets très techniques
+            listContainer.innerHTML = '';
+            data.slice(0, 10).forEach(article => {
+                const li = document.createElement('li');
+                li.innerHTML = `[${article.topic.toUpperCase()}] <a href="${article.link}" target="_blank">${article.title}</a>`;
+                listContainer.appendChild(li);
+            });
+        } catch (error) { listContainer.innerHTML = '<li>Erreur chargement flux.</li>'; }
+    }
+    window.onload = loadNews;
+  </script>
 </body>
 </html>
