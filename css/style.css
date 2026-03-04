@@ -9,16 +9,18 @@ header {
   top: 0; 
   left: 0; 
   z-index: 5;
-  padding: 20px 0px;
+  padding: 0px;
   background: black;
 }
 
 nav {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 nav a {
@@ -27,6 +29,7 @@ nav a {
   text-decoration: none;
   transition: .3s;
   font-size:.7rem;
+  padding: 20px;
 }
 
 nav .active{
@@ -88,8 +91,34 @@ nav a:hover {
   overflow: hidden;
 }
 
+.card p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
 .card h2 {
   margin-bottom:10px;
+}
+
+.card blockquote {
+  border-left: 3px solid rgba(255,255,255,0.5);
+  padding:15px;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+  margin:20px;
+  background-color: rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+.card blockquote:hover {
+  border-color: rgba(255,255,255,1);
+  color: rgba(255,255,255,1);
+  background-color: rgba(0,0,0,0.5);
+}
+
+.quote-author {
+  margin-top: 5px;
+  font-size: .7rem;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
 }
 
 .sources-container {
@@ -117,6 +146,82 @@ nav a:hover {
 }
 .source-ref:hover {
   color: rgba(255,255,255,1);
+}
+
+.image-container {
+  width: 100%;
+  padding: 1.5rem 20px;
+}
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  align-items: center;
+}
+.image-container img {
+  border-radius: 5px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.image-container h2 {
+  margin-top: 5px;
+  font-style: bold;
+  font-size: 1rem;
+}
+.image-container p {
+  margin-top: 0px;
+  font-size: .7rem;
+  color: rgba(255,255,255,0.8);
+}
+
+table {
+  width: 100%;
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
+  background:rgba(0, 0, 0, 0.85);
+  border-radius: 5px;
+}
+
+table thead tr {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  color: rgba(255,255,255,0.8);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+table td {
+  padding: 0.75rem 1rem;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+table tbody tr {
+  transition: background 0.3s;
+}
+
+table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  table { font-size: 0.75rem; }
+  table th, table td { padding: 0.6rem 0.6rem; }
 }
 
 #google-sheet-link-container {
@@ -227,5 +332,12 @@ footer {
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
+  }
+  
+  nav a {
+    padding: 0px;
+  }
+  header {
+    padding: 20px 0;
   }
 }

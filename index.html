@@ -27,8 +27,13 @@
       <div class="card">
         <span class="tag">01 - CONTEXTE</span>
         <h2>L'Ère de l'AI-Defined Vehicle</h2>
-        <p>L'industrie automobile mondiale est entrée dans une phase de mutation structurelle où l'intelligence artificielle n'est plus une simple fonctionnalité ajoutée, mais le cœur battant du véhicule. Cette transition, marquée par le passage historique du véhicule défini par logiciel (Software-Defined Vehicle - SDV) au véhicule défini par l'IA (AI-Defined Vehicle - AIDV), repose sur un changement de paradigme technique : l'abandon de la dépendance exclusive au Cloud au profit de l'inférence locale via des modèles de langage compacts, ou Small Language Models (SLM). Les enseignements du CES 2025 et les récentes avancées technologiques de NVIDIA, Qualcomm et MediaTek démontrent que l'avenir de la mobilité se joue désormais à la périphérie du réseau (Edge), là où la latence, la confidentialité et la sécurité critique ne tolèrent aucune compromission.</p>
-      </div>
+        <p>L'industrie automobile mondiale traverse actuellement une mutation architecturale et conceptuelle sans précédent, redéfinissant la nature même du véhicule. Les annonces stratégiques et les démonstrations technologiques consécutives au Consumer Electronics Show (CES) de 2025 ont cristallisé une transition fondamentale : l'évolution du paradigme du "Software-Defined Vehicle" (SDV), historiquement dépendant des infrastructures Cloud, vers celui de l'"AI-Defined Vehicle" (AIDV). Selon une enquête récente de McKinsey, 38 % des propriétaires de véhicules premium sont prêts à changer de marque pour une meilleure expérience numérique, soulignant l'urgence commerciale de cette transition. <a href="#src-1" class="source-ref">[1]</a> Cette transformation est rendue possible par la décentralisation de l'intelligence artificielle, passant d'une exécution centralisée sur des serveurs distants à une inférence locale à la périphérie du réseau (Edge AI).</p>
+        <p>Au cœur de cette révolution technologique se trouve l'intégration des "Small Language Models" (SLM) directement au sein des unités de traitement neuronal (NPU) embarquées. L'analyse approfondie des tendances post-CES 2025 révèle que cette migration vers l'Edge AI n'est pas dictée par une simple quête de performance absolue, mais par la nécessité de résoudre un trilemme structurel critique pour les constructeurs automobiles (OEM) et les équipementiers (Tier 1) : la réduction impérative de la latence pour les systèmes critiques, la garantie d'une confidentialité absolue des données des utilisateurs, et la maîtrise de l'efficacité énergétique dans un contexte de rationalisation de l'empreinte carbone (GreenOps).</p>
+        <p>L'intégration de modèles génératifs compacts, dont la taille oscille entre 1 et 14 milliards de paramètres, permet désormais de fournir des capacités de raisonnement logique et de prise de décision comparables à celles de modèles Cloud massifs. Toutefois, le déploiement de ces modèles dans des environnements matériels soumis à de fortes contraintes thermiques, électriques et dimensionnelles exige des avancées majeures en matière de compression algorithmique, telles que la quantification en virgule flottante sur 4 bits (NVFP4), l'élagage structurel (pruning) et le décodage spéculatif.</p>
+        <ol class="sources-container">
+            <li id="src-1"><a href="https://www.mckinsey.com/industries/semiconductors/our-insights/the-rise-of-edge-ai-in-automotive" target="_blank">[1] McKinsey – The Rise of Edge AI in Automotive</a></li>
+        </ol>
+    </div>  
     </section>
 
     <div class="drive-gap"></div>
@@ -37,9 +42,9 @@
       <div class="card">
         <span class="tag">02 - ARCHITECTURE</span>
         <h2>Transition des Architectures Cloud vers les SLM Locaux</h2>
-        <p>La transition vers les SLM locaux est dictée par l'impératif de transformer l'IA "impressionnante" des centres de données en IA "utilisable" dans le monde réel. Les modèles massifs basés sur le cloud souffrent de latences imprévisibles, de risques de conformité des données (RGPD/HIPAA) et de coûts d'API prohibitifs pour une flotte de millions de véhicules. L'IA embarquée permet désormais une exécution hors ligne totale, garantissant que des fonctions critiques comme l'assistance vocale ou le diagnostic en temps réel restent opérationnelles même dans des zones blanches. Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives, s'inscrivant dans une démarche de "GreenOps" automobile où l'efficacité logicielle devient une mesure de performance au même titre que la vitesse. <a href="#src-1" class="source-ref">[1]</a></p>
+        <p>La transition vers les SLM locaux est dictée par l'impératif de transformer l'IA "impressionnante" des centres de données en IA "utilisable" dans le monde réel. Les modèles massifs basés sur le cloud souffrent de latences imprévisibles, de risques de conformité des données (RGPD/HIPAA) et de coûts d'API prohibitifs pour une flotte de millions de véhicules. L'IA embarquée permet désormais une exécution hors ligne totale, garantissant que des fonctions critiques comme l'assistance vocale ou le diagnostic en temps réel restent opérationnelles même dans des zones blanches. Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives, s'inscrivant dans une démarche de "GreenOps" automobile où l'efficacité logicielle devient une mesure de performance au même titre que la vitesse. <a href="#src-2" class="source-ref">[2]</a></p>
         <ol class="sources-container">
-          <li><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[1] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
+          <li><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[2] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
         </ol>
       </div>
     </section>
@@ -51,11 +56,41 @@
         <span class="tag">03 - PERFORMANCE</span>
         <h2>Détails Techniques de la Transition</h2>
         <p>L'analyse des contraintes opérationnelles montre que les modèles de langage de 3 à 7 milliards de paramètres (3B-7B) constituent le point d'équilibre optimal pour l'automobile. Ces modèles, bien que plus petits que leurs homologues de 175 milliards de paramètres, peuvent être optimisés pour surpasser les modèles généralistes sur des tâches spécialisées grâce au réglage fin (fine-tuning) et à la spécialisation par domaine. Par exemple, un modèle "Legal SLM" ou "Automotive SLM" peut atteindre une précision supérieure à GPT-4 pour des cas d'usage spécifiques tout en consommant une fraction de la puissance de calcul.</p>
-        <p>Dans un contexte de conduite, la latence est le paramètre le plus critique. Un modèle cloud subit les délais de transmission réseau, ce qui rend les interactions vocales hachées et les décisions de sécurité impossibles à grande vitesse. En déplaçant l'inférence sur le matériel in-car, les constructeurs (OEM) atteignent une latence quasi nulle, essentielle pour les agents cognitifs qui doivent interpréter l'intention du conducteur en millisecondes. De plus, la confidentialité est "intégrée par conception" (built-in) : les données vocales et les flux vidéo des caméras d'habitacle ne quittent jamais le véhicule, éliminant les risques de fuites de données et facilitant la conformité réglementaire mondiale. <a href="#src-3" class="source-ref">[3]</a></p>
+        <p>Dans un contexte de conduite, la latence est le paramètre le plus critique. Les architectures SDV de première génération s'appuyaient sur le Cloud Computing pour analyser les requêtes vocales complexes ou traiter certaines données environnementales. Cependant, les études comparatives récentes démontrent que le Cloud impose des temps de latence incompressibles en raison de la transmission des paquets de données via les réseaux cellulaires 5G. <a href="#src-3" class="source-ref">[3]</a> À une vitesse de croisière de 130 km/h sur autoroute, un véhicule parcourt environ 36 mètres par seconde : un délai de traitement Cloud de 120 millisecondes se traduit par une distance parcourue "à l'aveugle" algorithmique inacceptable pour les systèmes d'évitement de collision ou de prise de décision autonome de Niveau 3 et 4. En déplaçant l'inférence sur le matériel in-car, les OEM atteignent une latence quasi nulle, essentielle pour les agents cognitifs qui doivent interpréter l'intention du conducteur en millisecondes. <a href="#src-4" class="source-ref">[4]</a></p>
+        <table class="sources-container">
+          <thead>
+            <tr>
+              <th> Architecture</th>
+              <th>Temps de Réponse Moyen</th>
+              <th>Réduction Énergétique</th>
+              <th>Fiabilité Hors-Ligne</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cloud AI (ex: AWS/GCP)</td>
+              <td>120 ms</td>
+              <td>Référence (0 %)</td>
+              <td>Nulle</td>
+            </tr>
+            <tr>
+              <td>Edge AI (Local embarqué)</td>
+              <td>15 ms</td>
+              <td>- 35 %</td>
+              <td>Totale</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 1em;">De plus, la confidentialité est "intégrée par conception" (built-in) : les données vocales et les flux vidéo des caméras d'habitacle ne quittent jamais le véhicule, éliminant les risques de fuites de données et facilitant la conformité réglementaire mondiale. <a href="#src-4" class="source-ref">[4]</a></p>
         <p>La transition architecturale s'accompagne également d'un changement de modèle économique. Le passage du modèle SaaS (Software as a Service) avec des frais récurrents à une infrastructure Edge AI permet aux OEM de maîtriser leurs coûts opérationnels sur le cycle de vie du véhicule, tout en offrant des mises à jour logicielles transparentes (OTA) pour améliorer les modèles locaux.</p>
+        <blockquote>
+          "Loin du battage habituel du CES, nous avons vu émerger un certain nombre de tendances... L'accent a été mis sur l'exécution, les concepts futuristes passant au second plan pour le moment. Les véhicules autonomes ont fait forte impression, passant du simple engouement à une réalité à court terme."
+          <br><span class="quote-author">- Brian Rhodes, Directeur chez S&P Global Mobility <a href="#src-5" class="source-ref">[5]</a></span>
+        </blockquote>
         <ol class="sources-container">
-          <li><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">[2] Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
-          <li><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[3] Edge AI in Automotive Market Sizing</a></li>
+          <li><a href="https://www.researchgate.net/publication/390209737_Edge_AI_vs_Cloud_AI_Performance_Trade-offs_for_Real-Time_Data_Processing" target="_blank">[3] Edge AI vs Cloud AI – Performance Trade-offs for Real-Time Data Processing (ResearchGate)</a></li>
+          <li><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[4] Edge AI in Automotive Market Sizing</a></li>
+          <li><a href="https://www.spglobal.com/automotive-insights/en/blogs/2025/01/ai-automotive-trends-ces-2025-recap" target="_blank">[5] S&P Global Mobility – AI & Automotive Trends: CES 2025 Recap</a></li>
         </ol>
       </div>
     </section>
@@ -68,6 +103,15 @@
         <h2>NVIDIA, Qualcomm & MediaTek</h2>
         <p>Les enseignements du CES 2025 démontrent que l'avenir de la mobilité se joue désormais à la périphérie du réseau. NVIDIA Drive Thor, Qualcomm Snapdragon Ride et MediaTek Dimensity Auto redéfinissent le cockpit numérique.</p>
         <p>Ces plateformes embarquent des NPU dédiés capables d'exécuter des modèles multimodaux (vision + langage) en temps réel, sans aucune connexion réseau requise.</p>
+    </section>
+
+    <div class="drive-gap"></div>
+
+    <section class="drive-section">
+      <div class="card">
+        <span class="tag">05 - CONFIDENTIALITÉ</span>
+        <h2>Souveraineté des Données et Confidentialité par Conception</h2>
+        <p>L'habitacle moderne de l'AI-Defined Vehicle est équipé d'une matrice dense de capteurs biométriques, de microphones directionnels et de caméras de surveillance du conducteur (Driver Monitoring Systems). Le déploiement de modèles SLM et VLM (Vision Language Models) directement sur les composants en silicium du véhicule instaure un paradigme de "Privacy by Design". Les données biométriques, les conversations des passagers et les flux vidéo sont ingérés, analysés et purgés localement, sans jamais quitter l'enceinte physique du véhicule, éliminant les risques de fuites de données et facilitant la conformité réglementaire mondiale (RGPD/HIPAA).</p>
       </div>
     </section>
 
@@ -75,9 +119,9 @@
 
     <section class="drive-section">
       <div class="card">
-        <span class="tag">05 - GREENOPS</span>
+        <span class="tag">06 - GREENOPS</span>
         <h2>Efficacité Énergétique & Durabilité</h2>
-        <p>Le passage à l'Edge réduit la consommation énergétique globale par rapport aux fermes de serveurs massives. L'efficacité logicielle devient une mesure de performance au même titre que la vitesse ou l'autonomie.</p>
+        <p>L'empreinte carbone exponentielle de l'intelligence artificielle est devenue une préoccupation stratégique de premier plan. L'architecture Edge AI s'inscrit au cœur de cette démarche GreenOps. Le transfert de la charge d'inférence des gigantesques fermes de serveurs vers des NPU automobiles hautement efficients modifie le bilan carbone de l'IA. Selon une récente étude empirique sur le traitement des données en temps réel, l'adoption de l'Edge AI a permis de réduire l'utilisation énergétique globale de 35 % par rapport à une solution entièrement hébergée dans le Cloud. <a href="#src-3" class="source-ref">[3]</a> En distribuant l'effort de calcul sur les millions de processeurs qui équipent le parc automobile mondial, les constructeurs transforment la flotte de véhicules en une grille d'inférence décentralisée.</p>
         <p>La transition s'accompagne d'un nouveau modèle économique : du SaaS à frais récurrents vers une infrastructure Edge AI amortie sur le cycle de vie du véhicule, avec des mises à jour OTA transparentes.</p>
       </div>
     </section>
@@ -88,9 +132,11 @@
       <div class="card">
         <h2>Sources et Références</h2>
         <ul class="sources-container">
-          <li id="src-1"><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[1] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
-          <li id="src-2"><a href="https://developer.nvidia.com/blog/accelerating-llm-and-vlm-inference-for-automotive-and-robotics-with-nvidia-tensorrt-edge-llm/" target="_blank">[2] Accelerating LLM and VLM Inference for Automotive and Robotics with NVIDIA TensorRT</a></li>
-          <li id="src-3"><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[3] Edge AI in Automotive Market Sizing</a></li>
+          <li id="src-1"><a href="https://www.mckinsey.com/industries/semiconductors/our-insights/the-rise-of-edge-ai-in-automotive" target="_blank">[1] McKinsey – The Rise of Edge AI in Automotive</a></li>
+          <li id="src-2"><a href="https://ai.plainenglish.io/small-language-models-slms-are-beating-big-models-in-the-real-world-156ae842b94a" target="_blank">[2] Small Language Models (SLMs) are Beating Big Models in the Real World</a></li>
+          <li id="src-3"><a href="https://www.researchgate.net/publication/390209737_Edge_AI_vs_Cloud_AI_Performance_Trade-offs_for_Real-Time_Data_Processing" target="_blank">[3] Edge AI vs Cloud AI – Performance Trade-offs for Real-Time Data Processing (ResearchGate)</a></li>
+          <li id="src-4"><a href="https://www.towardsautomotive.com/insights/edge-ai-in-automotive-market-sizing" target="_blank">[4] Edge AI in Automotive Market Sizing</a></li>
+          <li id="src-5"><a href="https://www.spglobal.com/automotive-insights/en/blogs/2025/01/ai-automotive-trends-ces-2025-recap" target="_blank">[5] S&P Global Mobility – AI & Automotive Trends: CES 2025 Recap</a></li>
         </ul>
       </div>
     </section>
@@ -134,7 +180,6 @@
         </div>
     
         <div class="footer-bottom">
-          <span>© 2026 Martin Villette - Centrale Lyon</span>
           <span>Veille Technologique · S9 MOS</span>
         </div>
     
@@ -154,7 +199,6 @@
   </script>
 
   <script>
-    // Sur cette page méthodologie, on peut choisir d'afficher TOUS les sujets ou un sujet 'tech'
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwavboJq92GEn1vyeLpHYveqHZufqgMgRslfZWgVAhCO5hYUehvGEEOsYea0-ySyNi4Ig/exec";
     const PAGE_TOPICS = ["contexte"];
 
