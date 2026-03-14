@@ -138,7 +138,7 @@
         <p>Un script personnalisé hébergé sur Google Cloud s'exécute automatiquement chaque jour. Il scanne une liste de flux RSS couvrant des sources spécialisées : blogs NVIDIA, arXiv, Reddit r/LocalLLaMA, Hugging Face Trending, ainsi que huit alertes Google configurées sur des mots-clés ciblés. Pour chaque flux, le script détecte automatiquement le format (Atom ou RSS standard), extrait les titres, liens et dates de publication, et dédoublonne les entrées via une comparaison avec les liens déjà stockés en base.</p>
 
         <h3 style="margin-top:1.2rem;margin-bottom:0.5rem;">Flux RSS surveillés</h3>
-        <ul>
+        <ul class="methodology-list">
           <li>https://blogs.nvidia.com/blog/category/auto/feed/</li>
           <li>http://export.arxiv.org/api/query?search_query=all:quantization+AND+all:LLM&start=0&max_results=10</li>
           <li>https://feeds.feedburner.com/nvidiablog</li>
@@ -149,7 +149,7 @@
         </ul>
 
         <h3 style="margin-top:1.2rem;margin-bottom:0.5rem;">Google Alerts configurées</h3>
-        <ul>
+        <ul class="methodology-list">
           <li>("Agentic AI" OR "Function calling") AND ("Vehicle control" OR "ADAS" OR "Voice assistant" OR "Automotive")</li>
           <li>("Generative AI" OR "LLM" OR "SLM") AND "Automotive" AND ("Safety" OR "Hallucination" OR "Latency" OR "Privacy")</li>
           <li>("NVIDIA DRIVE Thor" OR "Snapdragon Digital Chassis" OR "Qualcomm" OR "Intel Automotive") AND ("GenAI" OR "LLM" OR "NPU" OR "SLM" OR "AI")</li>
@@ -169,6 +169,8 @@
         <span class="tag">06 - FILTRAGE IA</span>
         <h2>B. Filtrage Intelligent (IA via API Groq)</h2>
         <p>Pour éviter le "bruit" informationnel, chaque titre d'article est soumis à un modèle de langage (Llama 3.1 8B) via l'API Groq. Le prompt impose un arbre de décision strict en deux étapes : d'abord un filtre de rejet pour les sujets hors-scope (médecine, finance, crypto), puis une catégorisation parmi six tags : <em>hardware, software_models, use_cases, manufacturers, future, contexte</em>. Tout article non classifiable est rejeté avec le label <em>autre</em>. Un mécanisme de retry (3 tentatives, pause de 10s sur erreur 429) assure la robustesse face aux limites de débit de l'API.</p>
+        <p>Malgré cela, le filtrage reste imparfait : certains articles classés <em>software_models</em> ou <em>hardware</em> peuvent porter sur des modèles ou des puces sans lien direct avec l’automobile (par exemple du cloud pur), tandis que d’autres articles réellement pertinents pour le véhicule ne sont pas détectés comme tels. Ce biais vient du fait que le modèle de langage reste généraliste et opère uniquement à partir des titres, ce qui limite la compréhension contexte automobile.</p>
+        <p>De plus, une partie du tri repose volontairement sur un filtrage local par expressions régulières (regex) pour limiter le nombre d’appels API vers Groq. Concrètement, dès qu’un titre contient certains mots-clés (par exemple des noms de constructeurs ou de fabricants de puces), l’article est automatiquement accepté et catégorisé sans être analysé par le modèle IA. Cela permet de réduire les coûts et la latence, mais implique aussi que certains contenus restent assez éloignés de l’IA embarquée ou du véhicule, tout en apparaissant dans le flux car ils correspondent aux règles locales plutôt qu’à une compréhension fine du contexte.</p>
       </div>
     </section>
 
@@ -187,7 +189,7 @@
 <span class="c-comment">// 1. CONFIGURATION</span>
 <span class="c-comment">// ==========================================</span>
 <span class="c-keyword">const</span> GROQ_API_KEY <span class="c-operator">=</span> <span class="c-string">"gsk_xxx"</span>;
-<span class="c-keyword">const</span> GROQ_MODEL   <span class="c-operator">=</span> <span class="c-string">"llama-3.1-8b-instant"</span>;
+<span class="c-keyword">const</span> GROQ_MODEL <span class="c-operator">=</span> <span class="c-string">"llama-3.1-8b-instant"</span>;
 
 <span class="c-keyword">const</span> RSS_URLS <span class="c-operator">=</span> [
   <span class="c-string">"https://www.google.fr/alerts/feeds/13679352391490227375/13514125029556601403"</span>,
@@ -220,20 +222,22 @@
 
   <span class="c-keyword">let</span> articlesToProcess <span class="c-operator">=</span> [];
 
-  <span class="c-comment">// --- ÉTAPE 1 : RÉCUPÉRATION DES FLUX ---</span>
+  <span class="c-comment">// --- ETAPE 1 : RÉCUPÉRATION DES FLUX ---</span>
   RSS_URLS.forEach(url <span class="c-operator">=&gt;</span> {
     <span class="c-keyword">try</span> {
-      <span class="c-keyword">const</span> response <span class="c-operator">=</span> UrlFetchApp.fetch(url, {muteHttpExceptions: <span class="c-keyword">true</span>});
+      <span class="c-keyword">const</span> response <span class="c-operator">=</span> UrlFetchApp.fetch(url, { muteHttpExceptions: <span class="c-keyword">true</span> });
       <span class="c-keyword">if</span> (response.getResponseCode() <span class="c-operator">!==</span> <span class="c-number">200</span>) <span class="c-keyword">return</span>;
 
-      <span class="c-keyword">const</span> root <span class="c-operator">=</span> XmlService.parse(response.getContentText()).getRootElement();
+      <span class="c-keyword">const</span> xml <span class="c-operator">=</span> response.getContentText();
+      <span class="c-keyword">const</span> document <span class="c-operator">=</span> XmlService.parse(xml);
+      <span class="c-keyword">const</span> root <span class="c-operator">=</span> document.getRootElement();
       <span class="c-keyword">const</span> atom <span class="c-operator">=</span> XmlService.getNamespace(<span class="c-string">'http://www.w3.org/2005/Atom'</span>);
 
       <span class="c-keyword">let</span> entries <span class="c-operator">=</span> root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>
         <span class="c-operator">?</span> root.getChildren(<span class="c-string">'entry'</span>, atom)
         : (root.getChild(<span class="c-string">'channel'</span>) <span class="c-operator">?</span> root.getChild(<span class="c-string">'channel'</span>).getChildren(<span class="c-string">'item'</span>) : []);
 
-      <span class="c-keyword">const</span> limit <span class="c-operator">=</span> (url.includes(<span class="c-string">"huggingface"</span>) <span class="c-operator">||</span> url.includes(<span class="c-string">"arxiv"</span>)) <span class="c-operator">?</span> <span class="c-number">5</span> : <span class="c-number">10</span>;
+      <span class="c-keyword">let</span> limit <span class="c-operator">=</span> url.includes(<span class="c-string">"huggingface"</span>) <span class="c-operator">||</span> url.includes(<span class="c-string">"arxiv"</span>) <span class="c-operator">?</span> <span class="c-number">5</span> : <span class="c-number">10</span>;
       entries <span class="c-operator">=</span> entries.slice(<span class="c-number">0</span>, limit);
 
       entries.forEach(entry <span class="c-operator">=&gt;</span> {
@@ -241,13 +245,13 @@
 
         <span class="c-keyword">if</span> (root.getName() <span class="c-operator">===</span> <span class="c-string">'feed'</span>) {
           <span class="c-keyword">const</span> linkElem <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>, atom);
-          link      <span class="c-operator">=</span> linkElem <span class="c-operator">?</span> linkElem.getAttribute(<span class="c-string">'href'</span>).getValue() : <span class="c-string">""</span>;
-          title     <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>, atom).getText();
-          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'published'</span>, atom)<span class="c-operator">?.</span>getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
+          link <span class="c-operator">=</span> linkElem <span class="c-operator">?</span> linkElem.getAttribute(<span class="c-string">'href'</span>).getValue() : <span class="c-string">""</span>;
+          title <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>, atom).getText();
+          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'published'</span>, atom)<span class="c-operator">?</span>.getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
         } <span class="c-keyword">else</span> {
-          link      <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>).getText();
-          title     <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>).getText();
-          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'pubDate'</span>)<span class="c-operator">?.</span>getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
+          link <span class="c-operator">=</span> entry.getChild(<span class="c-string">'link'</span>).getText();
+          title <span class="c-operator">=</span> entry.getChild(<span class="c-string">'title'</span>).getText();
+          published <span class="c-operator">=</span> entry.getChild(<span class="c-string">'pubDate'</span>)<span class="c-operator">?</span>.getText() <span class="c-operator">??</span> <span class="c-keyword">new</span> Date().toISOString();
         }
 
         title <span class="c-operator">=</span> title.replace(<span class="c-operator">/</span>&lt;[^&gt;]+&gt;<span class="c-operator">/g</span>, <span class="c-string">''</span>).trim();
@@ -261,7 +265,7 @@
     }
   });
 
-  <span class="c-comment">// --- ÉTAPE 2 : FILTRAGE LOCAL (REGEX) ---</span>
+  <span class="c-comment">// --- ETAPE 2 : FILTRAGE LOCAL (REGEX) ---</span>
   <span class="c-keyword">let</span> articlesForGroq <span class="c-operator">=</span> [];
 
   articlesToProcess.forEach(article <span class="c-operator">=&gt;</span> {
@@ -277,7 +281,7 @@
     }
   });
 
-  <span class="c-comment">// --- ÉTAPE 3 : BATCHING API GROQ ---</span>
+  <span class="c-comment">// --- ETAPE 3 : BATCHING API GROQ ---</span>
   <span class="c-keyword">if</span> (articlesForGroq.length <span class="c-operator">&gt;</span> <span class="c-number">0</span>) {
     <span class="c-function">processInBatches</span>(articlesForGroq, sheet);
   }
@@ -289,11 +293,19 @@
 <span class="c-keyword">function</span> <span class="c-function">classifyLocalRegex</span>(title) {
   <span class="c-keyword">const</span> t <span class="c-operator">=</span> title.toLowerCase();
 
+  <span class="c-comment">// Rejet immédiat hors-sujet</span>
   <span class="c-keyword">if</span> (<span class="c-operator">/</span>(médecine|cancer|bitcoin|crypto|nft|biology|santé)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'autre'</span>;
+
+  <span class="c-comment">// Hardware pur</span>
   <span class="c-keyword">if</span> (<span class="c-operator">/</span>(nvidia|amd|qualcomm|snapdragon|soc|npu|gpu|tops|silicon|chip|semiconductor)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'hardware'</span>;
+
+  <span class="c-comment">// Modèles SLM/LLM et perf pure</span>
   <span class="c-keyword">if</span> (<span class="c-operator">/</span>(llama|qwen|mistral|phi-3|slm|llm|quantization|7b|8b|70b|parameter|distillation|fine-tuning)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'software_models'</span>;
+
+  <span class="c-comment">// Constructeurs Auto</span>
   <span class="c-keyword">if</span> (<span class="c-operator">/</span>(tesla|bmw|mercedes|waymo|weride|ford|toyota|oem|robotaxi)<span class="c-operator">/i</span>.test(t)) <span class="c-keyword">return</span> <span class="c-string">'manufacturers'</span>;
 
+  <span class="c-comment">// Si aucun mot-clé évident n'est trouvé, on retourne null pour envoyer à l'IA</span>
   <span class="c-keyword">return</span> <span class="c-keyword">null</span>;
 }
 
@@ -305,7 +317,10 @@
 
   <span class="c-keyword">for</span> (<span class="c-keyword">let</span> i <span class="c-operator">=</span> <span class="c-number">0</span>; i <span class="c-operator">&lt;</span> articles.length; i <span class="c-operator">+=</span> BATCH_SIZE) {
     <span class="c-keyword">const</span> batch <span class="c-operator">=</span> articles.slice(i, i <span class="c-operator">+</span> BATCH_SIZE);
-    <span class="c-keyword">const</span> categories <span class="c-operator">=</span> <span class="c-function">classifyBatchWithGroq</span>(batch.map(a <span class="c-operator">=&gt;</span> a.title));
+    <span class="c-keyword">const</span> titlesArray <span class="c-operator">=</span> batch.map(a <span class="c-operator">=&gt;</span> a.title);
+
+    console.log(<span class="c-template">`Envoi d'un batch de ${batch.length} articles à Groq...`</span>);
+    <span class="c-keyword">const</span> categories <span class="c-operator">=</span> <span class="c-function">classifyBatchWithGroq</span>(titlesArray);
 
     batch.forEach((article, index) <span class="c-operator">=&gt;</span> {
       article.category <span class="c-operator">=</span> categories[index] <span class="c-operator">||</span> <span class="c-string">'autre'</span>;
@@ -320,48 +335,61 @@
 }
 
 <span class="c-comment">// ==========================================</span>
-<span class="c-comment">// 5. APPEL API GROQ (OPTIMISÉ POUR BATCH)</span>
+<span class="c-comment">// 5. APPEL API GROQ </span>
 <span class="c-comment">// ==========================================</span>
 <span class="c-keyword">function</span> <span class="c-function">classifyBatchWithGroq</span>(titlesArray) {
+  <span class="c-keyword">const</span> url <span class="c-operator">=</span> <span class="c-string">"https://api.groq.com/openai/v1/chat/completions"</span>;
+
+  <span class="c-comment">// Le prompt est conçu pour forcer une sortie JSON exploitable par Apps Script</span>
   <span class="c-keyword">const</span> prompt <span class="c-operator">=</span> <span class="c-template">`
-Tu es un classificateur strict spécialisé dans l'IA Embarquée, l'Automobile et la performance des modèles (SLM/LLM).
-Voici un tableau JSON de ${titlesArray.length} titres d'articles :
-${JSON.stringify(titlesArray)}
+    Tu es un classificateur strict spécialisé dans l'IA Embarquée, l'Automobile et la performance des modèles (SLM/LLM).
+    Voici un tableau JSON de ${titlesArray.length} titres d'articles :
+    ${JSON.stringify(titlesArray)}
 
-Pour CHAQUE titre, assigne UNE SEULE de ces catégories :
-- "hardware"        : Puces, GPU, NPU, TOPS, silicium.
-- "software_models" : Algorithmes, SLM, LLM, quantization, RAG.
-- "use_cases"       : ADAS, cockpit intelligent, infotainment dans le véhicule.
-- "manufacturers"   : Constructeurs auto, robotaxis, usines, partenariats.
-- "future"          : Prospective, régulations, horizons 2030, GreenOps.
-- "contexte"        : Marché global Edge AI ou automobile.
-- "autre"           : Hors-sujet (médecine, finance, web pur, etc.).
+    Pour CHAQUE titre, assigne UNE SEULE de ces catégories :
+    - "hardware" : Puces, GPU, NPU, TOPS, silicium.
+    - "software_models" : Algorithmes, SLM, LLM, quantization, RAG, perf pure des modèles.
+    - "use_cases" : ADAS, cockpit intelligent, infotainment dans le véhicule.
+    - "manufacturers" : Constructeurs auto, robotaxis, usines, partenariats.
+    - "future" : Prospective, régulations, horizons 2030, GreenOps.
+    - "contexte" : Marché global Edge AI ou automobile.
+    - "autre" : Hors-sujet (médecine, finance, web pur, etc.).
 
-RÈGLE ABSOLUE : Réponds UNIQUEMENT par un tableau JSON valide de ${titlesArray.length} chaînes, dans le MÊME ORDRE.
-Exemple : ["software_models", "autre", "hardware"]`</span>;
+    RÈGLE ABSOLUE : Tu DOIS répondre UNIQUEMENT par un tableau JSON valide contenant ${titlesArray.length} chaînes de caractères (les catégories), dans le MÊME ORDRE que les titres fournis. Ne rajoute AUCUN texte avant ou après le tableau JSON.
+    Exemple de réponse attendue : ["software_models", "autre", "hardware"]
+  `</span>;
 
-  <span class="c-keyword">const</span> options <span class="c-operator">=</span> {
-    method: <span class="c-string">"post"</span>, contentType: <span class="c-string">"application/json"</span>,
-    headers: { Authorization: <span class="c-string">"Bearer "</span> <span class="c-operator">+</span> GROQ_API_KEY },
-    payload: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [{ role: <span class="c-string">"user"</span>, content: prompt }],
-      temperature: <span class="c-number">0.0</span>, max_tokens: <span class="c-number">150</span>
-    }),
-    muteHttpExceptions: <span class="c-keyword">true</span>
+  <span class="c-keyword">const</span> payload <span class="c-operator">=</span> {
+    <span class="c-string">"model"</span>: GROQ_MODEL,
+    <span class="c-string">"messages"</span>: [{ <span class="c-string">"role"</span>: <span class="c-string">"user"</span>, <span class="c-string">"content"</span>: prompt }],
+    <span class="c-string">"temperature"</span>: <span class="c-number">0.0</span>,
+    <span class="c-string">"max_tokens"</span>: <span class="c-number">150</span>
   };
 
-  <span class="c-keyword">for</span> (<span class="c-keyword">let</span> attempt <span class="c-operator">=</span> <span class="c-number">0</span>; attempt <span class="c-operator">&lt;</span> <span class="c-number">3</span>; attempt<span class="c-operator">++</span>) {
-    <span class="c-keyword">try</span> {
-      <span class="c-keyword">const</span> res  <span class="c-operator">=</span> UrlFetchApp.fetch(<span class="c-string">"https://api.groq.com/openai/v1/chat/completions"</span>, options);
-      <span class="c-keyword">const</span> code <span class="c-operator">=</span> res.getResponseCode();
+  <span class="c-keyword">const</span> options <span class="c-operator">=</span> {
+    <span class="c-string">"method"</span>: <span class="c-string">"post"</span>,
+    <span class="c-string">"contentType"</span>: <span class="c-string">"application/json"</span>,
+    <span class="c-string">"headers"</span>: { <span class="c-string">"Authorization"</span>: <span class="c-string">"Bearer "</span> <span class="c-operator">+</span> GROQ_API_KEY },
+    <span class="c-string">"payload"</span>: JSON.stringify(payload),
+    <span class="c-string">"muteHttpExceptions"</span>: <span class="c-keyword">true</span>
+  };
 
-      <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">200</span>) {
-        <span class="c-keyword">let</span> content <span class="c-operator">=</span> JSON.parse(res.getContentText()).choices[<span class="c-number">0</span>].message.content.trim();
+  <span class="c-keyword">let</span> maxRetries <span class="c-operator">=</span> <span class="c-number">3</span>;
+  <span class="c-keyword">for</span> (<span class="c-keyword">let</span> attempt <span class="c-operator">=</span> <span class="c-number">0</span>; attempt <span class="c-operator">&lt;</span> maxRetries; attempt<span class="c-operator">++</span>) {
+    <span class="c-keyword">try</span> {
+      <span class="c-keyword">const</span> response <span class="c-operator">=</span> UrlFetchApp.fetch(url, options);
+      <span class="c-keyword">if</span> (response.getResponseCode() <span class="c-operator">===</span> <span class="c-number">200</span>) {
+        <span class="c-keyword">const</span> json <span class="c-operator">=</span> JSON.parse(response.getContentText());
+        <span class="c-keyword">let</span> content <span class="c-operator">=</span> json.choices[<span class="c-number">0</span>].message.content.trim();
+
+        <span class="c-comment">// Nettoyage au cas où l'IA ajoute des balises Markdown</span>
         content <span class="c-operator">=</span> content.replace(<span class="c-operator">/</span>```json<span class="c-operator">/g</span>, <span class="c-string">''</span>).replace(<span class="c-operator">/</span>```<span class="c-operator">/g</span>, <span class="c-string">''</span>).trim();
-        <span class="c-keyword">const</span> parsed <span class="c-operator">=</span> JSON.parse(content);
-        <span class="c-keyword">if</span> (Array.isArray(parsed) <span class="c-operator">&amp;&amp;</span> parsed.length <span class="c-operator">===</span> titlesArray.length) <span class="c-keyword">return</span> parsed;
-      } <span class="c-keyword">else</span> <span class="c-keyword">if</span> (code <span class="c-operator">===</span> <span class="c-number">429</span>) {
+
+        <span class="c-keyword">const</span> categoriesArray <span class="c-operator">=</span> JSON.parse(content);
+        <span class="c-keyword">if</span> (Array.isArray(categoriesArray) <span class="c-operator">&amp;&amp;</span> categoriesArray.length <span class="c-operator">===</span> titlesArray.length) {
+          <span class="c-keyword">return</span> categoriesArray;
+        }
+      } <span class="c-keyword">else</span> <span class="c-keyword">if</span> (response.getResponseCode() <span class="c-operator">===</span> <span class="c-number">429</span>) {
         console.warn(<span class="c-string">"Erreur 429 : Pause de 10s..."</span>);
         Utilities.sleep(<span class="c-number">10000</span>);
       }
@@ -371,11 +399,12 @@ Exemple : ["software_models", "autre", "hardware"]`</span>;
     }
   }
 
+  <span class="c-comment">// Fallback si l'API échoue : on met tout en "autre" pour ne pas bloquer le script</span>
   <span class="c-keyword">return</span> <span class="c-keyword">new</span> Array(titlesArray.length).fill(<span class="c-string">'autre'</span>);
 }
 
 <span class="c-comment">// ==========================================</span>
-<span class="c-comment">// 6. API POUR LE SITE WEB</span>
+<span class="c-comment">// 6. API POUR LE SITE WEB </span>
 <span class="c-comment">// ==========================================</span>
 <span class="c-keyword">function</span> <span class="c-function">doGet</span>(e) {
   <span class="c-keyword">const</span> sheet <span class="c-operator">=</span> SpreadsheetApp.getActiveSpreadsheet().getSheetByName(<span class="c-string">'Data'</span>);

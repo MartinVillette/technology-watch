@@ -232,7 +232,9 @@ table tbody tr:last-child td {
 }
 #google-sheet-link {
   color:black;
-  background: rgba(255,255,255,0.8);
+  /* background: rgba(255,255,255,0.8); */
+  background: rgba(255,255,255,0);
+  border: 1px solid rgba(255,255,255,0.5);
   padding:10px 20px;
   border-radius: 5px;
   text-align: center;
@@ -242,9 +244,11 @@ table tbody tr:last-child td {
   word-break: break-word;
   margin: 0 auto;
   transition: .3s;
+  color:rgba(255, 255, 255, 0.8);
 }
 #google-sheet-link:hover {
   background: rgba(255,255,255,1);
+  color:rgba(0, 0, 0, 0.85)
 }
 #news-list{
   display: flex;
@@ -265,6 +269,25 @@ table tbody tr:last-child td {
 }
 
 #news-container a:hover {
+  color: rgba(255,255,255,1);
+}
+
+.methodology-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  padding-left:15px;
+  font-style: italic;
+}
+
+.methodology-list li {
+  color: rgba(255,255,255,0.5);
+  font-size:.8rem;
+  transition: .3s;
+}
+
+.methodology-list li:hover {
   color: rgba(255,255,255,1);
 }
 
